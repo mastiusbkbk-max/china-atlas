@@ -1,0 +1,761 @@
+[
+  {
+    "id": "taishan",
+    "name": "泰山",
+    "province": "山东",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      117.101,
+      36.255
+    ]
+  },
+  {
+    "id": "huashan",
+    "name": "华山",
+    "province": "陕西",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      110.086,
+      34.478
+    ]
+  },
+  {
+    "id": "hengshan-north",
+    "name": "恒山",
+    "province": "山西",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      113.7356,
+      39.6739
+    ]
+  },
+  {
+    "id": "hengshan-south",
+    "name": "衡山",
+    "province": "湖南",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      112.708,
+      27.299
+    ]
+  },
+  {
+    "id": "songshan",
+    "name": "嵩山",
+    "province": "河南",
+    "category": "culture",
+    "theme": "mountains",
+    "coordinate": [
+      112.9364,
+      34.5078
+    ]
+  },
+  {
+    "id": "emei",
+    "name": "峨眉山",
+    "province": "四川",
+    "category": "culture",
+    "theme": "mountains",
+    "coordinate": [
+      103.333,
+      29.525
+    ]
+  },
+  {
+    "id": "lushan",
+    "name": "庐山",
+    "province": "江西",
+    "category": "culture",
+    "theme": "mountains",
+    "coordinate": [
+      115.973,
+      29.555
+    ]
+  },
+  {
+    "id": "changbai",
+    "name": "长白山",
+    "province": "吉林",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      128.055,
+      42.006
+    ]
+  },
+  {
+    "id": "tianshan",
+    "name": "天山天池",
+    "province": "新疆",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      88.123,
+      43.891
+    ]
+  },
+  {
+    "id": "gongga",
+    "name": "贡嘎雪山",
+    "province": "四川",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      101.879,
+      29.596
+    ]
+  },
+  {
+    "id": "yulong",
+    "name": "玉龙雪山",
+    "province": "云南",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      100.177,
+      27.098
+    ]
+  },
+  {
+    "id": "wudang",
+    "name": "武当山",
+    "province": "湖北",
+    "category": "culture",
+    "theme": "mountains",
+    "coordinate": [
+      111.004,
+      32.401
+    ]
+  },
+  {
+    "id": "namjagbarwa",
+    "name": "南迦巴瓦",
+    "province": "西藏",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      95.055,
+      29.632
+    ]
+  },
+  {
+    "id": "siguniang",
+    "name": "四姑娘山",
+    "province": "四川",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      102.902,
+      31.101
+    ]
+  },
+  {
+    "id": "shennongjia",
+    "name": "神农架",
+    "province": "湖北",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      110.497,
+      31.457
+    ]
+  },
+  {
+    "id": "yellow-river",
+    "name": "黄河壶口",
+    "province": "山西",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      110.449,
+      36.147
+    ]
+  },
+  {
+    "id": "yarlung",
+    "name": "雅鲁藏布大峡谷",
+    "province": "西藏",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      94.96,
+      29.77
+    ]
+  },
+  {
+    "id": "three-parallel-rivers",
+    "name": "三江并流",
+    "province": "云南",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      98.62,
+      28
+    ]
+  },
+  {
+    "id": "tiger-leaping",
+    "name": "虎跳峡",
+    "province": "云南",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      100.104,
+      27.188
+    ]
+  },
+  {
+    "id": "detian",
+    "name": "德天瀑布",
+    "province": "广西",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      106.723,
+      22.856
+    ]
+  },
+  {
+    "id": "huangguoshu",
+    "name": "黄果树瀑布",
+    "province": "贵州",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      105.668,
+      25.992
+    ]
+  },
+  {
+    "id": "jiuzhaigou",
+    "name": "九寨沟",
+    "province": "四川",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      103.879,
+      33.219
+    ]
+  },
+  {
+    "id": "west-lake",
+    "name": "杭州西湖",
+    "province": "浙江",
+    "category": "culture",
+    "theme": "lakes",
+    "coordinate": [
+      120.147,
+      30.242
+    ]
+  },
+  {
+    "id": "poyang",
+    "name": "鄱阳湖",
+    "province": "江西",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      116.25,
+      29.14
+    ]
+  },
+  {
+    "id": "namtso",
+    "name": "纳木错",
+    "province": "西藏",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      90.88,
+      30.77
+    ]
+  },
+  {
+    "id": "dongting",
+    "name": "洞庭湖",
+    "province": "湖南",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      112.95,
+      29.25
+    ]
+  },
+  {
+    "id": "zhangye",
+    "name": "张掖七彩丹霞",
+    "province": "甘肃",
+    "category": "nature",
+    "theme": "desert",
+    "coordinate": [
+      100.068,
+      38.973
+    ]
+  },
+  {
+    "id": "badain-jaran",
+    "name": "巴丹吉林沙漠",
+    "province": "内蒙古",
+    "category": "nature",
+    "theme": "desert",
+    "coordinate": [
+      102.48,
+      39.68
+    ]
+  },
+  {
+    "id": "taklamakan",
+    "name": "塔克拉玛干沙漠",
+    "province": "新疆",
+    "category": "nature",
+    "theme": "desert",
+    "coordinate": [
+      83,
+      39
+    ]
+  },
+  {
+    "id": "wulong",
+    "name": "武隆天生三桥",
+    "province": "重庆",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      107.787,
+      29.429
+    ]
+  },
+  {
+    "id": "sanya",
+    "name": "三亚亚龙湾",
+    "province": "海南",
+    "category": "nature",
+    "theme": "coast",
+    "coordinate": [
+      109.642,
+      18.23
+    ]
+  },
+  {
+    "id": "gulangyu",
+    "name": "鼓浪屿",
+    "province": "福建",
+    "category": "culture",
+    "theme": "coast",
+    "coordinate": [
+      118.0639,
+      24.4455
+    ]
+  },
+  {
+    "id": "taroko",
+    "name": "太鲁阁",
+    "province": "台湾",
+    "category": "nature",
+    "theme": "rivers",
+    "coordinate": [
+      121.603,
+      24.177
+    ]
+  },
+  {
+    "id": "victoria-harbour",
+    "name": "维多利亚港",
+    "province": "香港",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      114.171,
+      22.293
+    ]
+  },
+  {
+    "id": "macau",
+    "name": "澳门历史城区",
+    "province": "澳门",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      113.5406,
+      22.1975
+    ]
+  },
+  {
+    "id": "jinshitan",
+    "name": "大连金石滩",
+    "province": "辽宁",
+    "category": "nature",
+    "theme": "coast",
+    "coordinate": [
+      122.041,
+      39.074
+    ]
+  },
+  {
+    "id": "weizhou",
+    "name": "涠洲岛",
+    "province": "广西",
+    "category": "nature",
+    "theme": "coast",
+    "coordinate": [
+      109.11,
+      21.023
+    ]
+  },
+  {
+    "id": "potala",
+    "name": "布达拉宫",
+    "province": "西藏",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      91.1174,
+      29.6578
+    ]
+  },
+  {
+    "id": "terracotta",
+    "name": "秦始皇陵与兵马俑",
+    "province": "陕西",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      109.2785,
+      34.3849
+    ]
+  },
+  {
+    "id": "mogao",
+    "name": "莫高窟",
+    "province": "甘肃",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      94.8042,
+      40.0372
+    ]
+  },
+  {
+    "id": "longmen",
+    "name": "龙门石窟",
+    "province": "河南",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      112.4697,
+      34.5556
+    ]
+  },
+  {
+    "id": "yungang",
+    "name": "云冈石窟",
+    "province": "山西",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      113.1259,
+      40.1105
+    ]
+  },
+  {
+    "id": "suzhou",
+    "name": "苏州园林",
+    "province": "江苏",
+    "category": "culture",
+    "theme": "gardens",
+    "coordinate": [
+      120.6256,
+      31.3267
+    ]
+  },
+  {
+    "id": "pingyao",
+    "name": "平遥古城",
+    "province": "山西",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      112.178,
+      37.202
+    ]
+  },
+  {
+    "id": "lijiang",
+    "name": "丽江古城",
+    "province": "云南",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      100.234,
+      26.872
+    ]
+  },
+  {
+    "id": "fujian-tulou",
+    "name": "福建土楼",
+    "province": "福建",
+    "category": "culture",
+    "theme": "gardens",
+    "coordinate": [
+      117.0462,
+      24.6597
+    ]
+  },
+  {
+    "id": "hongcun",
+    "name": "宏村",
+    "province": "安徽",
+    "category": "culture",
+    "theme": "gardens",
+    "coordinate": [
+      117.991,
+      30.004
+    ]
+  },
+  {
+    "id": "temple-heaven",
+    "name": "天坛",
+    "province": "北京",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      116.4066,
+      39.8837
+    ]
+  },
+  {
+    "id": "grand-canal",
+    "name": "大运河",
+    "province": "江苏",
+    "category": "culture",
+    "theme": "rivers",
+    "coordinate": [
+      119.4448,
+      32.3981
+    ]
+  },
+  {
+    "id": "dujiangyan",
+    "name": "都江堰",
+    "province": "四川",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      103.61,
+      31.004
+    ]
+  },
+  {
+    "id": "qufu",
+    "name": "曲阜三孔",
+    "province": "山东",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      116.9845,
+      35.5967
+    ]
+  },
+  {
+    "id": "chengde",
+    "name": "承德避暑山庄",
+    "province": "河北",
+    "category": "culture",
+    "theme": "gardens",
+    "coordinate": [
+      117.939,
+      40.987
+    ]
+  },
+  {
+    "id": "tianjin",
+    "name": "天津海河",
+    "province": "天津",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      117.188,
+      39.145
+    ]
+  },
+  {
+    "id": "helanshan",
+    "name": "贺兰山岩画",
+    "province": "宁夏",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      106.024,
+      38.784
+    ]
+  },
+  {
+    "id": "greater-khingan",
+    "name": "大兴安岭",
+    "province": "黑龙江",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      122.367,
+      52.97
+    ]
+  },
+  {
+    "id": "huanglong",
+    "name": "黄龙",
+    "province": "四川",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      103.829,
+      32.747
+    ]
+  },
+  {
+    "id": "sun-moon-lake",
+    "name": "日月潭",
+    "province": "台湾",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      120.917,
+      23.857
+    ]
+  },
+  {
+    "id": "hainan-rainforest",
+    "name": "海南热带雨林",
+    "province": "海南",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      108.844,
+      18.743
+    ]
+  },
+  {
+    "id": "sanqingshan",
+    "name": "三清山",
+    "province": "江西",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      118.065,
+      28.898
+    ]
+  },
+  {
+    "id": "shanghai-bund",
+    "name": "上海外滩",
+    "province": "上海",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      121.49,
+      31.24
+    ]
+  },
+  {
+    "id": "danxiashan",
+    "name": "丹霞山",
+    "province": "广东",
+    "category": "nature",
+    "theme": "desert",
+    "coordinate": [
+      113.746,
+      25.027
+    ]
+  },
+  {
+    "id": "kailash",
+    "name": "冈仁波齐",
+    "province": "西藏",
+    "category": "culture",
+    "theme": "mountains",
+    "coordinate": [
+      81.312,
+      31.067
+    ]
+  },
+  {
+    "id": "honghe-terraces",
+    "name": "红河哈尼梯田",
+    "province": "云南",
+    "category": "culture",
+    "theme": "gardens",
+    "coordinate": [
+      102.7797,
+      23.0933
+    ]
+  },
+  {
+    "id": "fanjingshan",
+    "name": "梵净山",
+    "province": "贵州",
+    "category": "nature",
+    "theme": "mountains",
+    "coordinate": [
+      108.69,
+      27.905
+    ]
+  },
+  {
+    "id": "dazu",
+    "name": "大足石刻",
+    "province": "重庆",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      105.7939,
+      29.7511
+    ]
+  },
+  {
+    "id": "phoenix",
+    "name": "凤凰古城",
+    "province": "湖南",
+    "category": "culture",
+    "theme": "cities",
+    "coordinate": [
+      109.599,
+      27.948
+    ]
+  },
+  {
+    "id": "chaka",
+    "name": "茶卡盐湖",
+    "province": "青海",
+    "category": "nature",
+    "theme": "lakes",
+    "coordinate": [
+      99.089,
+      36.68
+    ]
+  },
+  {
+    "id": "leshan",
+    "name": "乐山大佛",
+    "province": "四川",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      103.7733,
+      29.5448
+    ]
+  },
+  {
+    "id": "maijishan",
+    "name": "麦积山石窟",
+    "province": "甘肃",
+    "category": "culture",
+    "theme": "heritage",
+    "coordinate": [
+      105.95,
+      34.3489
+    ]
+  }
+]
