@@ -1,13 +1,16 @@
-import * as maplibregl from 'maplibre-gl';
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './style.css';
 import { places, chapters, sources, themes, highlights, provinceNames } from './content.js';
 import { icon } from './icons.js';
-import { addLandforms, landformBounds, landformLabelLayers } from './landforms.js';
+import { addLandforms, loadLandformData, landformBounds, landformLabelLayers } from './landforms.js';
 import { placeStories } from './place-stories.js';
+import { installTileProtocol, setDetailTileCoverage } from './map-tiles.js';
 
-maplibregl.setWorkerUrl(mapWorkerUrl);
+const mapEngine = import('maplibre-gl');
+let maplibregl;
+const assetUrl = path => `${import.meta.env.BASE_URL}${path.replace(/^\.?\//, '')}`;
+const thumbnail = p => assetUrl(p.image.replace('/images/', '/images/thumbs/').replace(/\.jpg$/, '.webp'));
 
 const $ = (selector) => document.querySelector(selector);
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -18,11 +21,15 @@ let map;
 let landforms;
 const markers = [];
 let markerFrame;
+let markerTimer;
+let lastMarkerUpdate = 0;
 const searchAliases = { everest: '珠峰 Everest Qomolangma', yangtze: '长江三峡 瞿塘峡 白帝城 夔门', guilin: '桂林漓江 阳朔', dunhuang: '敦煌月牙泉 鸣沙山', 'forbidden-city': '北京故宫 紫禁城 故宫博物院', 'great-wall': '金山岭长城 万里长城', qinghai: '青海湖 Qinghai Lake', dali: '大理古城 苍山洱海' };
 let photos = {};
 let detailPhotos = {};
 let photoPlace;
 let photoIndex = 0;
+let photographyReady;
+let provincesLoaded = false;
 
 const app = $('#app');
 app.innerHTML = `
@@ -77,7 +84,7 @@ app.innerHTML = `
 
 function filteredPlaces() { return places.filter(p => state.category === 'all' || p.category === state.category); }
 function renderCards() {
-  $('#destination-track').innerHTML = filteredPlaces().map((p, i) => `<button class="destination-card ${state.selected === p.id ? 'selected' : ''}" data-place="${p.id}" aria-labelledby="card-title-${p.id}"><img src="${p.image}" alt="" loading="${i < 5 ? 'eager' : 'lazy'}"><span class="card-shade"></span><span class="card-order" aria-hidden="true">${String(places.indexOf(p) + 1).padStart(2, '0')}</span><span class="card-tag" aria-hidden="true">${p.category === 'culture' ? '人文足迹' : '自然奇境'}</span><span class="card-title"><span id="card-title-${p.id}"><strong>${p.name}</strong><small>${p.en.toUpperCase()}</small></span><span class="card-arrow">${icon('arrow')}</span></span></button>`).join('');
+  $('#destination-track').innerHTML = filteredPlaces().map((p, i) => `<button class="destination-card ${state.selected === p.id ? 'selected' : ''}" data-place="${p.id}" aria-labelledby="card-title-${p.id}"><img src="${thumbnail(p)}" alt="" width="480" height="300" decoding="async" fetchpriority="low" loading="${i < 5 ? 'eager' : 'lazy'}"><span class="card-shade"></span><span class="card-order" aria-hidden="true">${String(places.indexOf(p) + 1).padStart(2, '0')}</span><span class="card-tag" aria-hidden="true">${p.category === 'culture' ? '人文足迹' : '自然奇境'}</span><span class="card-title"><span id="card-title-${p.id}"><strong>${p.name}</strong><small>${p.en.toUpperCase()}</small></span><span class="card-arrow">${icon('arrow')}</span></span></button>`).join('');
   $('#destination-track').querySelectorAll('[data-place]').forEach(b => b.onclick = () => selectPlace(b.dataset.place));
   scheduleMarkers();
 }
@@ -90,7 +97,7 @@ function renderPhoto() {
   const gallery = placeGallery(photoPlace);
   const photo = gallery[photoIndex];
   $('#photo-title').textContent = `${photoPlace.name} / 山河影像`;
-  $('.photo-viewer-content').innerHTML = `<figure><img src="${photo.file}" alt="${safeText(photo.alt)}"><figcaption>${safeText(photo.caption)}</figcaption></figure><p class="photo-credit">${photo.author ? photoCredit(photo) : '摄影资料载入中…'}</p>`;
+  $('.photo-viewer-content').innerHTML = `<figure><img src="${assetUrl(photo.file)}" alt="${safeText(photo.alt)}"><figcaption>${safeText(photo.caption)}</figcaption></figure><p class="photo-credit">${photo.author ? photoCredit(photo) : '摄影资料载入中…'}</p>`;
   $('#photo-count').textContent = `${String(photoIndex + 1).padStart(2, '0')} / ${String(gallery.length).padStart(2, '0')}`;
 }
 function openPhoto(p, index) {
@@ -106,6 +113,7 @@ function setReadingExpanded(expanded) {
   if (expanded) stopTour();
 }
 function renderPlace(p, preserveReading = false) {
+  loadPhotography();
   $('.intro').classList.add('dismissed');
   const panel = $('.place-panel');
   const scrollTop = preserveReading ? $('.place-scroll')?.scrollTop || 0 : 0;
@@ -115,8 +123,8 @@ function renderPlace(p, preserveReading = false) {
   panel.hidden = false;
   const story = placeStories[p.id];
   const detail = detailPhotos[p.id];
-  const detailFigure = detail ? `<figure class="place-photo"><button data-photo="1" aria-label="查看${p.name}第二张照片"><img src="${detail.file}" alt="${safeText(detail.alt)}" loading="lazy" width="${detail.width}" height="${detail.height}"><span>${icon('full')} 查看大图</span></button><figcaption><span>02 / 风景细读</span>${safeText(detail.caption)}</figcaption><details class="photo-attribution"><summary>摄影与许可</summary><p class="photo-credit">${photoCredit(detail)}</p></details></figure>` : '';
-  panel.innerHTML = `<div class="place-toolbar"><span>地点手记 <small>/ FIELD NOTES</small></span><button class="reading-toggle" aria-expanded="false" aria-controls="place-reading-content">展开阅读 ${icon('down')}</button><button class="panel-back" aria-label="返回中国全景">${icon('close')}</button></div><div class="place-scroll" id="place-reading-content"><div class="place-cover"><img src="${p.image}" alt="${safeText(placeGallery(p)[0].alt)}"><div class="place-cover-shade"></div><button class="cover-photo-button" data-photo="0" aria-label="查看${p.name}第一张照片"><span>${icon('full')} 查看照片</span></button><span class="place-category">${p.category === 'culture' ? '人文足迹 · CULTURE' : '自然奇境 · NATURE'}</span><h2>${p.name}<small>${p.en.toUpperCase()}</small></h2></div><div class="place-body"><div class="place-location">${icon('pin')} ${p.region}<span>${p.coordinate[1].toFixed(2)}° N / ${p.coordinate[0].toFixed(2)}° E</span></div><p class="place-kicker">${p.kicker}</p><h3>${p.title}</h3><p class="place-description">${p.description}</p><div class="place-stats">${p.stats.map(s => `<div><strong>${s.value}</strong><small>${s.label}</small></div>`).join('')}</div><div class="place-paragraphs"><section class="place-chapter"><h4><span>01</span>${story.chapterTitles[0]}</h4><p>${p.paragraphs[0]}</p></section>${detailFigure}<section class="place-chapter"><h4><span>02</span>${story.chapterTitles[1]}</h4><p>${p.paragraphs[1]}</p></section><section class="place-observation"><span class="observation-label">${icon('compass')} 观察手记</span><h4>在这里，看见什么</h4><p>${story.observation}</p></section></div><div class="place-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div><a class="place-source" href="${p.source.url}" target="_blank" rel="noopener noreferrer">延伸阅读 · ${p.source.label} ${icon('arrow')}</a><details class="photo-attribution cover-attribution"><summary>封面摄影与许可</summary><p class="photo-credit">${photos[p.id] ? photoCredit(photos[p.id]) : '摄影资料载入中…'}</p></details></div></div>`;
+  const detailFigure = detail ? `<figure class="place-photo"><button data-photo="1" aria-label="查看${p.name}第二张照片"><img src="${assetUrl(detail.file)}" alt="${safeText(detail.alt)}" loading="lazy" width="${detail.width}" height="${detail.height}"><span>${icon('full')} 查看大图</span></button><figcaption><span>02 / 风景细读</span>${safeText(detail.caption)}</figcaption><details class="photo-attribution"><summary>摄影与许可</summary><p class="photo-credit">${photoCredit(detail)}</p></details></figure>` : '';
+  panel.innerHTML = `<div class="place-toolbar"><span>地点手记 <small>/ FIELD NOTES</small></span><button class="reading-toggle" aria-expanded="false" aria-controls="place-reading-content">展开阅读 ${icon('down')}</button><button class="panel-back" aria-label="返回中国全景">${icon('close')}</button></div><div class="place-scroll" id="place-reading-content"><div class="place-cover"><img src="${assetUrl(p.image)}" alt="${safeText(placeGallery(p)[0].alt)}" decoding="async"><div class="place-cover-shade"></div><button class="cover-photo-button" data-photo="0" aria-label="查看${p.name}第一张照片"><span>${icon('full')} 查看照片</span></button><span class="place-category">${p.category === 'culture' ? '人文足迹 · CULTURE' : '自然奇境 · NATURE'}</span><h2>${p.name}<small>${p.en.toUpperCase()}</small></h2></div><div class="place-body"><div class="place-location">${icon('pin')} ${p.region}<span>${p.coordinate[1].toFixed(2)}° N / ${p.coordinate[0].toFixed(2)}° E</span></div><p class="place-kicker">${p.kicker}</p><h3>${p.title}</h3><p class="place-description">${p.description}</p><div class="place-stats">${p.stats.map(s => `<div><strong>${s.value}</strong><small>${s.label}</small></div>`).join('')}</div><div class="place-paragraphs"><section class="place-chapter"><h4><span>01</span>${story.chapterTitles[0]}</h4><p>${p.paragraphs[0]}</p></section>${detailFigure}<section class="place-chapter"><h4><span>02</span>${story.chapterTitles[1]}</h4><p>${p.paragraphs[1]}</p></section><section class="place-observation"><span class="observation-label">${icon('compass')} 观察手记</span><h4>在这里，看见什么</h4><p>${story.observation}</p></section></div><div class="place-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div><a class="place-source" href="${p.source.url}" target="_blank" rel="noopener noreferrer">延伸阅读 · ${p.source.label} ${icon('arrow')}</a><details class="photo-attribution cover-attribution"><summary>封面摄影与许可</summary><p class="photo-credit">${photos[p.id] ? photoCredit(photos[p.id]) : '摄影资料载入中…'}</p></details></div></div>`;
   $('.panel-back').onclick = resetView;
   $('.reading-toggle').onclick = () => setReadingExpanded(!panel.classList.contains('reading-expanded'));
   if (panel.classList.contains('reading-expanded')) setReadingExpanded(true);
@@ -133,7 +141,7 @@ function selectPlace(id, fromTour = false) {
   $('#landform-select').value = '';
   state.selected = p.id;
   renderPlace(p);
-  renderCards();
+  updateCardSelection();
   markers.forEach(m => m.element.classList.toggle('selected', m.place.id === id));
   if (map && state.mapReady) map.flyTo({ center: p.coordinate, zoom: p.zoom, pitch: state.terrain ? p.pitch : 0, bearing: -18, padding: mapPadding(), duration: reducedMotion ? 0 : 2600, essential: true });
   $('.map-caption').innerHTML = `<span class="live-dot"></span> ${p.name} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
@@ -153,7 +161,7 @@ function selectLandform(feature) {
   panel.hidden = false; panel.classList.add('landform-detail'); panel.scrollTop = 0;
   panel.innerHTML = `<div class="landform-heading"><span class="landform-eyebrow"><i class="${p.kind === 'mountain' ? 'mountain' : 'river'}-key"></i>${p.kind === 'mountain' ? '大地的骨架 / MOUNTAIN RANGES' : '大地的脉络 / RIVER SYSTEMS'}</span><button class="panel-back" aria-label="返回中国全景">${icon('close')}</button><h2>${safeText(p.name)}<small>${safeText(p.name_en)}</small></h2></div><div class="place-body"><p class="landform-description">${safeText(p.description)}</p>${p.direction ? `<div class="landform-fact"><span>总体走向</span>${safeText(p.direction)}</div>` : ''}${p.basin ? `<div class="landform-fact"><span>所属水系</span>${safeText(p.basin)}</div>` : ''}<p class="landform-precision">${safeText(p.precision_note)}</p><a class="place-source" href="${p.source}" target="_blank" rel="noopener noreferrer">${p.kind === 'mountain' ? '地理资料与延伸阅读' : '水系数据与比例尺说明'} ${icon('arrow')}</a><p class="landform-interaction">拖动、旋转地图，观察山河之间的关系。</p></div>`;
   $('.panel-back').onclick = resetView;
-  renderCards();
+  updateCardSelection();
   map.fitBounds(landformBounds(feature), { padding: mapPadding(), absolutePadding: true, maxZoom: 6.5, pitch: state.terrain ? 40 : 0, bearing: -8, duration: reducedMotion ? 0 : 1800 });
   $('.map-caption').innerHTML = `<span class="live-dot"></span> ${safeText(p.name)} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
   $('.layer-picker').hidden = true; $('#layers-button').setAttribute('aria-expanded', 'false'); $('#layers-button').classList.remove('active');
@@ -182,8 +190,8 @@ function resetView() {
   $('.place-panel').hidden = true; $('.place-panel').classList.remove('landform-detail', 'place-reading', 'reading-expanded'); $('.intro').classList.remove('dismissed');
   $('#landform-select').value = '';
   markers.forEach(m => m.element.classList.remove('selected'));
-  renderCards();
-  if (map && state.mapReady) map.easeTo({ center: [103, 35.5], zoom: innerWidth > 800 ? 3.45 + Math.log2(innerWidth / 1512) : 2.65, padding: innerWidth > 800 ? { left: 380, right: 85, top: 130, bottom: 260 } : { left: 50, right: 45, top: 160, bottom: 250 }, pitch: state.terrain ? 38 : 0, bearing: -8, duration: reducedMotion ? 0 : 2200 });
+  updateCardSelection();
+  if (map && state.mapReady) map.easeTo({ ...overviewCamera(), duration: reducedMotion ? 0 : 2200 });
   $('.map-caption').innerHTML = `<span class="live-dot"></span> 中国全景 <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
   history.replaceState(null, '', location.pathname);
 }
@@ -222,7 +230,7 @@ function matchesQuery(p, query) {
 }
 function renderSearch(query) {
   const found = places.filter(p => matchesQuery(p, query));
-  $('.search-results').innerHTML = found.length ? found.map(p => `<button data-place="${p.id}"><img src="${p.image}" alt="" loading="lazy"><span><strong>${p.name}</strong><small>${p.region} · ${p.tags[0]}</small></span><span class="result-category">${p.category === 'culture' ? '人文' : '自然'}</span>${icon('arrow')}</button>`).join('') : `<div class="empty-search">${icon('compass')}<h3>这里还没有收录这个坐标</h3><p>试试「珠峰」「桂林」「长城」或「高原」。</p></div>`;
+  $('.search-results').innerHTML = found.length ? found.map(p => `<button data-place="${p.id}"><img src="${thumbnail(p)}" alt="" loading="lazy" decoding="async"><span><strong>${p.name}</strong><small>${p.region} · ${p.tags[0]}</small></span><span class="result-category">${p.category === 'culture' ? '人文' : '自然'}</span>${icon('arrow')}</button>`).join('') : `<div class="empty-search">${icon('compass')}<h3>这里还没有收录这个坐标</h3><p>试试「珠峰」「桂林」「长城」或「高原」。</p></div>`;
   $('.search-results').querySelectorAll('[data-place]').forEach(b => b.onclick = () => { $('.search-dialog').close(); selectPlace(b.dataset.place); });
 }
 
@@ -240,13 +248,13 @@ function renderCatalog() {
   const found = places.filter(p => (catalog.theme === 'all' || p.theme === catalog.theme) && (catalog.province === 'all' || p.province === catalog.province) && matchesQuery(p, catalog.query));
   $('.catalog-results-heading').textContent = `${catalog.province === 'all' ? '辽阔中国' : catalog.province} / ${themes.find(t => t.id === catalog.theme)?.label || '全部山河'} · ${found.length} 个坐标`;
   $('.catalog-dialog').scrollTop = 0;
-  $('.catalog-grid').innerHTML = found.length ? found.map(p => `<button class="catalog-card" data-place="${p.id}"><div class="catalog-image"><img src="${p.image}" alt="" loading="lazy"><span>${themes.find(t => t.id === p.theme).label}</span></div><div class="catalog-card-body"><small>${p.region}</small><strong>${p.name} ${icon('arrow')}</strong><p>${p.description}</p></div></button>`).join('') : `<div class="empty-search">${icon('compass')}<h3>这条线索下还没有找到坐标</h3><p>换一个主题、地区或搜索词，继续发现山河。</p><button class="catalog-clear">清除筛选 ${icon('arrow')}</button></div>`;
+  $('.catalog-grid').innerHTML = found.length ? found.map(p => `<button class="catalog-card" data-place="${p.id}"><div class="catalog-image"><img src="${thumbnail(p)}" alt="" loading="lazy" decoding="async"><span>${themes.find(t => t.id === p.theme).label}</span></div><div class="catalog-card-body"><small>${p.region}</small><strong>${p.name} ${icon('arrow')}</strong><p>${p.description}</p></div></button>`).join('') : `<div class="empty-search">${icon('compass')}<h3>这条线索下还没有找到坐标</h3><p>换一个主题、地区或搜索词，继续发现山河。</p><button class="catalog-clear">清除筛选 ${icon('arrow')}</button></div>`;
   $('.catalog-grid').querySelectorAll('[data-place]').forEach(b => b.onclick = () => { $('.catalog-dialog').close(); selectPlace(b.dataset.place); });
   const clear = $('.catalog-clear'); if (clear) clear.onclick = openCatalog;
 }
 
 function openChapters() {
-  $('.story-dialog').innerHTML = `<div class="dialog-top"><span>山河专题 / EDITORIAL JOURNEYS</span><button class="icon-button" data-close aria-label="关闭专题">${icon('close')}</button></div><div class="story-intro"><span class="eyebrow">换一个角度，理解脚下的土地</span><h2 id="story-title">中国，是怎样的中国？</h2><p>${chapters.length} 条主题路线，${places.length} 个山河坐标。让镜头带你读懂自然与文明的相遇。</p></div><div class="chapter-grid">${chapters.map((c, i) => `<button class="chapter-card" data-chapter="${i}"><img src="${places.find(p => p.id === c.placeIds[0])?.image || './images/hero.jpg'}" alt="" loading="lazy"><div></div><span class="chapter-number">${c.number}</span><span class="chapter-content"><small>${c.en}</small><strong>${c.title}</strong><p>${c.intro || c.description}</p><span>${c.placeIds.length} 站 · 约 ${Math.round(c.placeIds.length * 11 / 60)} 分钟 ${icon('arrow')}</span></span></button>`).join('')}</div>`;
+  $('.story-dialog').innerHTML = `<div class="dialog-top"><span>山河专题 / EDITORIAL JOURNEYS</span><button class="icon-button" data-close aria-label="关闭专题">${icon('close')}</button></div><div class="story-intro"><span class="eyebrow">换一个角度，理解脚下的土地</span><h2 id="story-title">中国，是怎样的中国？</h2><p>${chapters.length} 条主题路线，${places.length} 个山河坐标。让镜头带你读懂自然与文明的相遇。</p></div><div class="chapter-grid">${chapters.map((c, i) => `<button class="chapter-card" data-chapter="${i}"><img src="${assetUrl(places.find(p => p.id === c.placeIds[0])?.image || '/images/hero.jpg')}" alt="" loading="lazy"><div></div><span class="chapter-number">${c.number}</span><span class="chapter-content"><small>${c.en}</small><strong>${c.title}</strong><p>${c.intro || c.description}</p><span>${c.placeIds.length} 站 · 约 ${Math.round(c.placeIds.length * 11 / 60)} 分钟 ${icon('arrow')}</span></span></button>`).join('')}</div>`;
   $('.story-dialog').querySelector('[data-close]').onclick = () => $('.story-dialog').close();
   $('.story-dialog').querySelectorAll('[data-chapter]').forEach(b => b.onclick = () => { $('.story-dialog').close(); startTour(chapters[Number(b.dataset.chapter)].placeIds); });
   $('.story-dialog').showModal();
@@ -254,12 +262,12 @@ function openChapters() {
 
 async function openAbout(showSources = false) {
   const sourceLinks = [...new Map([...sources, ...places.map(p => p.source)].map(s => [s.url, s])).values()];
-  $('.about-dialog').innerHTML = `<div class="dialog-top"><span>山河志 / ABOUT THIS ATLAS</span><button class="icon-button" data-close aria-label="关闭说明">${icon('close')}</button></div><div class="about-content"><div class="eyebrow">让辽阔，变得可亲近</div><h2 id="about-title">每一次看见，<br>都是重新认识。</h2><p>山河志是一部可以探索的中国地理图鉴。以真实的地理数据为底，以山川与文明的故事为线索，邀请你从世界屋脊一路走向江海之滨。现收录 ${places.length} 个代表坐标、${chapters.length} 条主题旅程，覆盖 ${provinceNames.length} 个省级行政区。</p><h3 id="data-notes">数据与地图说明</h3><ul><li>卫星影像与地形晕渲：Esri ArcGIS World Imagery / World Shaded Relief；影像来源包括 Esri、Vantor、Earthstar Geographics 及 GIS User Community，日期因区域而异。</li><li>三维地形：Mapzen / AWS Terrain Tiles，Terrarium 编码。为便于观察，地形垂直起伏放大 1.5 倍。</li><li>行政区划：阿里云 DataV GeoAtlas，包含 34 个省级行政区。边界为概略数据，近景自动隐去，不用于测绘、导航或行政认定。</li><li>地点坐标采用 WGS84，表示叙事代表位置。珠峰数值为 2020 年公布的雪面高程。</li><li>水系：Natural Earth 1:1000万河流与湖泊中心线，公有领域。按河段名称与水系归属组织；保留源数据的湖区断段和跨境延伸，是全国/区域概览，不代表精确河岸。近景渐隐。</li><li>山系：24 条手工概化的总体走向示意轴线，依公开地理资料整理；暖金虚线不代表精确山脊、山系边界或登山路线。山系与水系均支持点击介绍及按名称定位。</li><li>网站首屏影像与地形已本地缓存；放大后加载在线高清瓦片，需要网络连接。</li></ul><h3>延伸阅读与参考资料</h3><div class="reference-links">${sourceLinks.map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label || s.name || s.title} ${icon('arrow')}</a>`).join('')}<a href="https://geo.datav.aliyun.com/" target="_blank" rel="noopener noreferrer">阿里云 DataV GeoAtlas ${icon('arrow')}</a><a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank" rel="noopener noreferrer">地形数据归属与许可 ${icon('arrow')}</a></div><h3>山系与水系资料</h3><div class="reference-links"><a href="https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/" target="_blank" rel="noopener noreferrer">Natural Earth · 1:1000万水系数据 ${icon('arrow')}</a><a href="./data/mountains.geojson" target="_blank" rel="noopener noreferrer">24条山系 · 逐条参考资料与精度说明 ${icon('arrow')}</a><a href="./data/rivers.geojson" target="_blank" rel="noopener noreferrer">水系 · 逐条来源与河段说明 ${icon('arrow')}</a></div><h3>摄影来源</h3><div class="photo-sources">正在读取摄影资料…</div><p class="about-footer">独立地理科普项目 · 设计致意地理影像与科学叙事<br>本项目与星球研究所无关联。</p></div>`;
+  $('.about-dialog').innerHTML = `<div class="dialog-top"><span>山河志 / ABOUT THIS ATLAS</span><button class="icon-button" data-close aria-label="关闭说明">${icon('close')}</button></div><div class="about-content"><div class="eyebrow">让辽阔，变得可亲近</div><h2 id="about-title">每一次看见，<br>都是重新认识。</h2><p>山河志是一部可以探索的中国地理图鉴。以真实的地理数据为底，以山川与文明的故事为线索，邀请你从世界屋脊一路走向江海之滨。现收录 ${places.length} 个代表坐标、${chapters.length} 条主题旅程，覆盖 ${provinceNames.length} 个省级行政区。</p><h3 id="data-notes">数据与地图说明</h3><ul><li>卫星影像与地形晕渲：Esri ArcGIS World Imagery / World Shaded Relief；影像来源包括 Esri、Vantor、Earthstar Geographics 及 GIS User Community，日期因区域而异。</li><li>三维地形：Mapzen / AWS Terrain Tiles，Terrarium 编码。为便于观察，地形垂直起伏放大 1.5 倍。</li><li>行政区划：阿里云 DataV GeoAtlas，包含 34 个省级行政区。边界为概略数据，近景自动隐去，不用于测绘、导航或行政认定。</li><li>地点坐标采用 WGS84，表示叙事代表位置。珠峰数值为 2020 年公布的雪面高程。</li><li>水系：Natural Earth 1:1000万河流与湖泊中心线，公有领域。按河段名称与水系归属组织；保留源数据的湖区断段和跨境延伸，是全国/区域概览，不代表精确河岸。近景渐隐。</li><li>山系：24 条手工概化的总体走向示意轴线，依公开地理资料整理；暖金虚线不代表精确山脊、山系边界或登山路线。山系与水系均支持点击介绍及按名称定位。</li><li>全景与常用地点附近的部分影像、地形随站点提供；超出覆盖范围或继续放大时需联网。</li></ul><h3>延伸阅读与参考资料</h3><div class="reference-links">${sourceLinks.map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${s.label || s.name || s.title} ${icon('arrow')}</a>`).join('')}<a href="https://geo.datav.aliyun.com/" target="_blank" rel="noopener noreferrer">阿里云 DataV GeoAtlas ${icon('arrow')}</a><a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank" rel="noopener noreferrer">地形数据归属与许可 ${icon('arrow')}</a></div><h3>山系与水系资料</h3><div class="reference-links"><a href="https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-rivers-lake-centerlines/" target="_blank" rel="noopener noreferrer">Natural Earth · 1:1000万水系数据 ${icon('arrow')}</a><a href="./data/mountains.geojson" target="_blank" rel="noopener noreferrer">24条山系 · 逐条参考资料与精度说明 ${icon('arrow')}</a><a href="./data/rivers.geojson" target="_blank" rel="noopener noreferrer">水系 · 逐条来源与河段说明 ${icon('arrow')}</a></div><h3>摄影来源</h3><div class="photo-sources">正在读取摄影资料…</div><p class="about-footer">独立地理科普项目 · 设计致意地理影像与科学叙事<br>本项目与星球研究所无关联。</p></div>`;
   $('.about-dialog').querySelector('[data-close]').onclick = () => $('.about-dialog').close();
   $('.about-dialog').showModal();
   if (showSources) $('#data-notes').scrollIntoView({ block: 'start' });
   try {
-    await photographyReady;
+    await loadPhotography();
     const entries = [...Object.values(photos), ...Object.values(detailPhotos)];
     $('.photo-sources').innerHTML = entries.map(s => `<div><a href="${s.sourceUrl || s.source || s.url || s.originalUrl || '#'}" target="_blank" rel="noopener noreferrer">${safeText(s.title || s.id || '')}</a><span>${safeText(s.author || s.credit || '')} · <a href="${s.licenseUrl || s.sourceUrl}" target="_blank" rel="noopener noreferrer">${safeText(s.license || '')}</a> · 经缩放与压缩</span></div>`).join('');
   } catch { $('.photo-sources').textContent = '摄影资料暂未载入，请稍后重试。'; }
@@ -291,7 +299,7 @@ function bindUI() {
   $('#fullscreen-button').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { showToast('当前浏览器暂不支持全屏模式'); } };
   document.addEventListener('fullscreenchange', () => { $('#fullscreen-button').setAttribute('aria-label', document.fullscreenElement ? '退出全屏' : '进入全屏'); map?.resize(); });
   $('.basemap-options').querySelectorAll('button').forEach(b => b.onclick = () => { if (!state.mapReady) return; state.layer = b.dataset.layer; map.setLayoutProperty('satellite', 'visibility', state.layer === 'satellite' ? 'visible' : 'none'); map.setLayoutProperty('relief', 'visibility', state.layer === 'relief' ? 'visible' : 'none'); $('.basemap-options').querySelectorAll('button').forEach(el => el.classList.toggle('active', el === b)); });
-  $('#border-toggle').onchange = e => { state.borders = e.target.checked; if (state.mapReady) map.setLayoutProperty('provinces', 'visibility', state.borders ? 'visible' : 'none'); };
+  $('#border-toggle').onchange = e => { state.borders = e.target.checked; applyBorders(); };
   $('#river-toggle').onchange = e => setLandformVisible('river', e.target.checked);
   $('#mountain-toggle').onchange = e => setLandformVisible('mountain', e.target.checked);
   $('.landform-legend').querySelectorAll('button').forEach(b => b.onclick = () => setLandformVisible(b.dataset.landformKind, b.getAttribute('aria-pressed') !== 'true'));
@@ -300,7 +308,7 @@ function bindUI() {
   $('#tour-pause').onclick = () => { if (state.tour) { clearTimeout(tourTimer); map?.stop(); state.tour = false; $('.tour-progress').classList.remove('running'); $('#tour-pause').innerHTML = icon('play'); $('#tour-pause').setAttribute('aria-label', '继续漫游'); } else { state.tour = true; tourStep(); } };
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !document.querySelector('dialog[open]')) { $('.layer-picker').hidden = true; $('#layers-button').setAttribute('aria-expanded', 'false'); if (state.selected || state.landform) resetView(); } if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))) { e.preventDefault(); if (!$('.search-dialog').open) openSearch(); } });
   let wasWide = innerWidth > 800;
-  window.addEventListener('hashchange', () => { if (!state.mapReady) return; const id = location.hash.slice(1); if (places.some(p => p.id === id)) selectPlace(id); else if (!id) resetView(); });
+  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (places.some(p => p.id === id)) selectPlace(id); else if (!id) resetView(); });
   window.addEventListener('resize', () => {
     map?.resize();
     if (!state.mapReady || wasWide === (innerWidth > 800)) return;
@@ -311,66 +319,99 @@ function bindUI() {
   });
 }
 
-const tileCache = new Map();
-maplibregl.addProtocol('atlas', async (params, abortController) => {
-  const match = params.url.match(/^atlas:\/\/(satellite|terrain|relief)\/(\d+)\/(\d+)\/(\d+)/);
-  if (!match) throw new Error('Invalid tile URL');
-  const [, type, z, x, y] = match;
-  const key = `${type}/${z}/${x}/${y}`;
-  if (tileCache.has(key)) return { data: tileCache.get(key).slice(0) };
-  const ext = type === 'terrain' ? 'png' : 'jpg';
-  const remote = type === 'terrain' ? `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png` : `https://server.arcgisonline.com/ArcGIS/rest/services/${type === 'satellite' ? 'World_Imagery' : 'World_Shaded_Relief'}/MapServer/tile/${z}/${y}/${x}`;
-  let response;
-  if (Number(z) <= 5) {
-    response = await fetch(`./tiles/${type}/${z}/${x}/${y}.${ext}`, { signal: abortController.signal });
-    if (!response.ok || !(response.headers.get('content-type') || '').startsWith('image/')) response = null;
-  }
-  if (!response) response = await fetch(remote, { signal: abortController.signal });
-  if (!response.ok) throw new Error(`Tile ${response.status}`);
-  const data = await response.arrayBuffer();
-  if (tileCache.size > 300) tileCache.delete(tileCache.keys().next().value);
-  tileCache.set(key, data);
-  return { data: data.slice(0) };
-});
+function updateCardSelection() {
+  $('#destination-track').querySelectorAll('[data-place]').forEach(b => b.classList.toggle('selected', b.dataset.place === state.selected));
+}
 
-function initMap() {
+function applyBorders() {
+  if (!state.mapReady) return;
+  if (state.borders && !provincesLoaded) {
+    map.getSource('provinces').setData(assetUrl('/data/china-provinces.geojson'));
+    provincesLoaded = true;
+  }
+  map.setLayoutProperty('provinces', 'visibility', state.borders ? 'visible' : 'none');
+}
+
+function placeCamera(p) {
+  return { center: p.coordinate, zoom: p.zoom, pitch: state.terrain ? p.pitch : 0, bearing: -18, padding: mapPadding() };
+}
+
+function overviewCamera() {
+  const wide = innerWidth > 800;
+  return { center: [103, 35.5], zoom: wide ? 3.45 + Math.log2(innerWidth / 1512) : 2.65, padding: wide ? { left: 380, right: 85, top: 130, bottom: 260 } : { left: 50, right: 45, top: 160, bottom: 250 }, pitch: state.terrain ? 38 : 0, bearing: -8 };
+}
+
+async function initMap() {
   try {
-    map = new maplibregl.Map({ container: 'map', center: [104, 35], zoom: 3.5, pitch: 38, bearing: -8, maxPitch: 75, minZoom: 2, maxZoom: 16, renderWorldCopies: false, attributionControl: false, canvasContextAttributes: { antialias: true }, style: { version: 8, sources: {
+    maplibregl = await mapEngine;
+    maplibregl.setWorkerUrl(mapWorkerUrl);
+    maplibregl.setWorkerCount(navigator.hardwareConcurrency >= 4 ? 2 : 1);
+    installTileProtocol(maplibregl, { baseURL: new URL(import.meta.env.BASE_URL, location.href).href });
+    const coverageReady = fetch(assetUrl('/data/tiles-detail.json'), { signal: AbortSignal.timeout(2500) }).then(r => r.ok ? r.json() : {}).then(setDetailTileCoverage).catch(() => {});
+    const geographyReady = loadLandformData();
+    geographyReady.catch(() => {});
+    const linkedPlace = places.find(p => p.id === (state.selected || location.hash.slice(1)));
+    if (linkedPlace && !state.selected) { state.selected = linkedPlace.id; renderPlace(linkedPlace); updateCardSelection(); }
+    // A direct place link needs its sparse tile manifest before requesting close-up tiles.
+    if (state.selected) await coverageReady;
+    const initialPlace = places.find(p => p.id === state.selected);
+    const camera = initialPlace ? placeCamera(initialPlace) : overviewCamera();
+    map = new maplibregl.Map({ container: 'map', ...camera, maxPitch: 75, minZoom: 2, maxZoom: 16, maxTileCacheSize: innerWidth <= 800 ? 64 : 128, renderWorldCopies: false, attributionControl: false, canvasContextAttributes: { antialias: true }, style: { version: 8, sources: {
       satellite: { type: 'raster', tiles: ['atlas://satellite/{z}/{x}/{y}'], tileSize: 256, maxzoom: 18, attribution: '© Esri, Vantor, Earthstar Geographics' },
       relief: { type: 'raster', tiles: ['atlas://relief/{z}/{x}/{y}'], tileSize: 256, maxzoom: 13, attribution: '© Esri, USGS, NOAA' },
       terrain: { type: 'raster-dem', tiles: ['atlas://terrain/{z}/{x}/{y}'], tileSize: 256, encoding: 'terrarium', maxzoom: 14, attribution: '© Mapzen, USGS, NASA' },
       'hillshade-terrain': { type: 'raster-dem', tiles: ['atlas://terrain/{z}/{x}/{y}'], tileSize: 256, encoding: 'terrarium', maxzoom: 14 },
-      outline: { type: 'geojson', data: './data/china-outline.geojson' },
-      provinces: { type: 'geojson', data: './data/china-provinces.geojson' }
+      outline: { type: 'geojson', data: assetUrl('/data/china-outline.geojson') },
+      provinces: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } }
     }, layers: [
       { id: 'background', type: 'background', paint: { 'background-color': '#13272e' } },
       { id: 'satellite', type: 'raster', source: 'satellite', paint: { 'raster-saturation': -.25, 'raster-contrast': .12, 'raster-brightness-max': .84, 'raster-fade-duration': 400 } },
       { id: 'relief', type: 'raster', source: 'relief', layout: { visibility: 'none' }, paint: { 'raster-saturation': -.32, 'raster-brightness-max': .75 } },
-      { id: 'hillshade', type: 'hillshade', source: 'hillshade-terrain', paint: { 'hillshade-exaggeration': .24, 'hillshade-shadow-color': '#10252e', 'hillshade-highlight-color': '#d6debb', 'hillshade-illumination-direction': 315 } },
+      { id: 'hillshade', type: 'hillshade', source: 'hillshade-terrain', layout: { visibility: 'none' }, paint: { 'hillshade-exaggeration': .24, 'hillshade-shadow-color': '#10252e', 'hillshade-highlight-color': '#d6debb', 'hillshade-illumination-direction': 315 } },
       { id: 'country-glow', type: 'line', source: 'outline', maxzoom: 10, paint: { 'line-color': '#e0d6ab', 'line-width': 5, 'line-opacity': .10, 'line-blur': 5 } },
       { id: 'country-outline', type: 'line', source: 'outline', maxzoom: 10, paint: { 'line-color': '#e1d5b3', 'line-width': 1, 'line-opacity': ['interpolate', ['linear'], ['zoom'], 5, .62, 9, .2, 10, 0] } },
       { id: 'provinces', type: 'line', source: 'provinces', maxzoom: 10, layout: { visibility: 'none' }, paint: { 'line-color': '#eee5c9', 'line-width': .65, 'line-opacity': .42 } }
-    ], terrain: { source: 'terrain', exaggeration: 1.5 }, sky: { 'sky-color': '#223438', 'horizon-color': '#9caea5', 'fog-color': '#223b3e', 'fog-ground-blend': .4, 'horizon-fog-blend': .7, 'sky-horizon-blend': .8 } } });
+    ], sky: { 'sky-color': '#223438', 'horizon-color': '#9caea5', 'fog-color': '#223b3e', 'fog-ground-blend': .4, 'horizon-fog-blend': .7, 'sky-horizon-blend': .8 } } });
     map.addControl(new maplibregl.ScaleControl({ maxWidth: 95, unit: 'metric' }), 'bottom-right');
-    map.on('load', async () => {
-      try {
-        landforms = await addLandforms(map, selectLandform);
+    map.once('style.load', () => {
+      state.mapReady = true;
+      performance.mark('atlas-interactive');
+      $('#map-status').textContent = '影像载入中 · 已可探索';
+      const currentPlace = places.find(p => p.id === state.selected);
+      if (currentPlace?.id !== initialPlace?.id) map.jumpTo(currentPlace ? placeCamera(currentPlace) : overviewCamera());
+      if (currentPlace) $('.map-caption').innerHTML = `<span class="live-dot"></span> ${currentPlace.name} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
+      applyBorders();
+      addMarkers();
+      window.__atlas = { map, state, places, selectPlace, startTour, stopTour, resetView, selectLandform, setLandformVisible, get landforms() { return landforms; } };
+    });
+    let enhanced = false;
+    const enhanceMap = () => {
+      if (enhanced) return;
+      enhanced = true;
+      map.off('sourcedata', onImagery);
+      performance.mark('atlas-imagery');
+      // Paint the satellite view first; DEM and thematic labels enhance it afterwards.
+      if (state.terrain) map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
+      map.setLayoutProperty('hillshade', 'visibility', 'visible');
+      $('#map-status').textContent = state.terrain ? '影像已就绪 · 地形细化中' : '真实影像 · 自由探索';
+      addLandforms(map, selectLandform, geographyReady).then(controller => {
+        landforms = controller;
         $('#landform-select').innerHTML += ['mountain', 'river'].map(kind => `<optgroup label="${kind === 'mountain' ? '主要山脉' : '主要河流'}">${landforms.features.filter(f => f.properties.kind === kind).map(f => `<option value="${f.properties.id}">${safeText(f.properties.name)}</option>`).join('')}</optgroup>`).join('');
         setLandformVisible('mountain', state.mountains); setLandformVisible('river', state.rivers);
-      } catch (error) { console.warn('Geography layers:', error); showToast('山系与水系暂未载入，请刷新地图重试'); }
-      state.mapReady = true;
-      $('#map-status').textContent = '真实地形 · 自由探索';
-      addMarkers();
-      const initialPlace = location.hash.slice(1);
-      if (places.some(p => p.id === initialPlace)) selectPlace(initialPlace); else resetView();
-      window.__atlas = { map, state, places, selectPlace, startTour, stopTour, resetView, landforms, selectLandform, setLandformVisible };
-    });
-    map.on('move', () => { scheduleMarkers(); const c = map.getCenter(); $('#coordinates').textContent = `${Math.abs(c.lng).toFixed(2)}° ${c.lng >= 0 ? 'E' : 'W'}　 ${Math.abs(c.lat).toFixed(2)}° ${c.lat >= 0 ? 'N' : 'S'}`; $('.compass-button .icon').style.transform = `rotate(${-map.getBearing()}deg)`; });
+      }).catch(error => { console.warn('Geography layers:', error); showToast('山系与水系暂未载入，请刷新地图重试'); }).finally(() => {
+        map.once('idle', () => { performance.mark('atlas-ready'); if (!errorNotice) $('#map-status').textContent = state.terrain ? '真实地形 · 自由探索' : '真实影像 · 自由探索'; });
+      });
+      loadPhotography();
+    };
+    const onImagery = e => { if (e.sourceId === state.layer && e.sourceDataType === 'content' && e.tile) enhanceMap(); };
+    map.on('sourcedata', onImagery);
+    map.once('load', enhanceMap);
+    map.on('move', scheduleMarkers);
     map.on('moveend', scheduleMarkers);
     map.on('resize', scheduleMarkers);
     map.on('render', scheduleMarkers);
     let errorNotice = false;
-    map.on('error', e => { console.warn('Map resource:', e.error?.message || e); if (state.mapReady && !errorNotice && /fetch|network|tile/i.test(e.error?.message || '')) { errorNotice = true; $('#map-status').textContent = '部分高清影像暂不可用 · 可返回全景'; } });
+    map.on('error', e => { console.warn('Map resource:', e.error?.message || e); if (e.sourceId === 'provinces') provincesLoaded = false; if (state.mapReady && !errorNotice && /fetch|network|tile/i.test(e.error?.message || '')) { errorNotice = true; $('#map-status').textContent = '部分高清影像暂不可用 · 可返回全景'; } });
   } catch (error) { console.error(error); $('#map-status').textContent = '浏览器暂不支持三维地图'; showToast('请使用支持 WebGL 的现代浏览器，浏览三维山河'); }
 }
 
@@ -389,11 +430,18 @@ function addMarkers() {
 }
 
 function scheduleMarkers() {
-  if (!map || markerFrame) return;
-  markerFrame = requestAnimationFrame(() => { markerFrame = null; updateMarkers(); });
+  if (!map || markerFrame || markerTimer) return;
+  // Marker positions are animated by MapLibre; only collision checks need throttling.
+  markerTimer = setTimeout(() => {
+    markerTimer = null;
+    markerFrame = requestAnimationFrame(() => { markerFrame = null; lastMarkerUpdate = performance.now(); updateMarkers(); });
+  }, Math.max(0, 80 - (performance.now() - lastMarkerUpdate)));
 }
 
 function updateMarkers() {
+  const c = map.getCenter();
+  $('#coordinates').textContent = `${Math.abs(c.lng).toFixed(2)}° ${c.lng >= 0 ? 'E' : 'W'}　 ${Math.abs(c.lat).toFixed(2)}° ${c.lat >= 0 ? 'N' : 'S'}`;
+  $('.compass-button .icon').style.transform = `rotate(${-map.getBearing()}deg)`;
   const wide = innerWidth > 800;
   const zoom = map.getZoom();
   const width = map.getContainer().clientWidth;
@@ -419,11 +467,16 @@ function updateMarkers() {
   }
 }
 
-renderCards(); bindUI(); initMap();
-const photographyReady = Promise.all(['./data/photo-sources.json', './data/detail-photos-nature.json', './data/detail-photos-culture.json'].map(url => fetch(url).then(r => { if (!r.ok) throw new Error('Photography metadata unavailable'); return r.json(); }))).then(([covers, nature, culture]) => {
-  photos = covers;
-  detailPhotos = Object.fromEntries([...nature, ...culture].map(p => [p.id, p]));
-  if (state.selected) renderPlace(places.find(p => p.id === state.selected), true);
-  if ($('.photo-dialog').open) renderPhoto();
-});
-photographyReady.catch(() => {});
+renderCards(); bindUI();
+performance.mark('atlas-shell');
+initMap();
+function loadPhotography() {
+  photographyReady ??= Promise.all(['./data/photo-sources.json', './data/detail-photos-nature.json', './data/detail-photos-culture.json'].map(url => fetch(assetUrl(url), { priority: 'low' }).then(r => { if (!r.ok) throw new Error('Photography metadata unavailable'); return r.json(); }))).then(([covers, nature, culture]) => {
+    photos = covers;
+    detailPhotos = Object.fromEntries([...nature, ...culture].map(p => [p.id, p]));
+    if (state.selected) renderPlace(places.find(p => p.id === state.selected), true);
+    if ($('.photo-dialog').open) renderPhoto();
+  });
+  photographyReady.catch(() => { photographyReady = null; });
+  return photographyReady;
+}

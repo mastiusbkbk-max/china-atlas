@@ -116,7 +116,7 @@ test('destination photographs have traceable attribution and real local JPEG fil
     for (const key of ['sourceUrl', 'licenseUrl']) {
       assert.ok(['https:', 'http:'].includes(new URL(photo[key]).protocol), `${place.id}: invalid ${key}`);
     }
-    assert.equal(photo.file, place.image, `${place.id}: displayed image must match the credited file`);
+    assert.equal(photo.file.replace(/^\./, ''), place.image.replace(/^\./, ''), `${place.id}: displayed image must match the credited file`);
     assert.match(photo.file, /^\/images\/[a-z-]+\.jpg$/);
     const bytes = readFileSync(new URL(`../public${photo.file}`, import.meta.url));
     assert.ok(bytes.length > 0, `${place.id}: empty photograph`);

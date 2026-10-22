@@ -15,15 +15,19 @@ function riverLabelPoint(feature) {
   return line[0];
 }
 
-export async function addLandforms(map, onSelect) {
-  const collections = await Promise.all(['mountains', 'rivers'].map(async name => {
-    const response = await fetch(`./data/${name}.geojson`);
+export function loadLandformData() {
+  return Promise.all(['mountains', 'rivers'].map(async name => {
+    const response = await fetch(`${import.meta.env.BASE_URL}data/${name}.geojson`, { priority: 'low' });
     if (!response.ok) throw new Error(`Unable to load ${name}`);
     return response.json();
   }));
+}
+
+export async function addLandforms(map, onSelect, collections) {
+  collections = await (collections ?? loadLandformData());
   const features = collections.flatMap(data => data.features);
   const names = features.map(f => f.properties.name).join('');
-  await document.fonts.load('600 16px "Noto Serif SC"', names);
+  const fontReady = document.fonts.load('600 16px "Noto Serif SC"', names).catch(() => {});
   const layerIds = { mountain: [], river: [] };
   const colors = { mountain: '#dec28a', river: '#86d8e7' };
   const riverColor = ['case', ['==', ['get', 'name'], '黄河'], '#edc477', colors.river];
@@ -60,6 +64,8 @@ export async function addLandforms(map, onSelect) {
   map.addSource('river-label-points', { type: 'geojson', data: { type: 'FeatureCollection', features: collections[1].features.map(f => ({ type: 'Feature', properties: f.properties, geometry: { type: 'Point', coordinates: riverLabelPoint(f) } })) } });
   map.addSource('mountain-label-points', { type: 'geojson', data: { type: 'FeatureCollection', features: collections[0].features.map(f => ({ type: 'Feature', properties: f.properties, geometry: { type: 'Point', coordinates: f.properties.label_coord } })) } });
 
+  // Lines can be explored while the optional label font is still loading.
+  await Promise.race([fontReady, new Promise(resolve => setTimeout(resolve, 2500))]);
   for (const kind of ['mountain', 'river']) {
     for (const tier of [1, 2, 3]) {
       const id = `${kind}-labels-${tier}`;
