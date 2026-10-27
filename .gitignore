@@ -3,3 +3,7 @@ dist/
 .DS_Store
 artifacts/
 promo/
+
+# Local baseline build and shared dependency link
+dist-baseline/
+node_modules

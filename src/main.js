@@ -3,9 +3,10 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './style.css';
 import { places, chapters, sources, themes, highlights, provinceNames } from './content.js';
 import { icon } from './icons.js';
-import { addLandforms, loadLandformData, landformBounds, landformLabelLayers } from './landforms.js';
+import { addLandforms, loadLandformData, landformBounds } from './landforms.js';
 import { placeStories } from './place-stories.js';
 import { installTileProtocol, setDetailTileCoverage } from './map-tiles.js';
+import { addPlaceMarkers } from './map-markers.js';
 
 const mapEngine = import('maplibre-gl');
 let maplibregl;
@@ -19,7 +20,7 @@ const catalog = { theme: 'all', province: 'all', query: '' };
 let tourTimer;
 let map;
 let landforms;
-const markers = [];
+let updatePlaceMarkers;
 let markerFrame;
 let markerTimer;
 let lastMarkerUpdate = 0;
@@ -86,6 +87,7 @@ function filteredPlaces() { return places.filter(p => state.category === 'all' |
 function renderCards() {
   $('#destination-track').innerHTML = filteredPlaces().map((p, i) => `<button class="destination-card ${state.selected === p.id ? 'selected' : ''}" data-place="${p.id}" aria-labelledby="card-title-${p.id}"><img src="${thumbnail(p)}" alt="" width="480" height="300" decoding="async" fetchpriority="low" loading="${i < 5 ? 'eager' : 'lazy'}"><span class="card-shade"></span><span class="card-order" aria-hidden="true">${String(places.indexOf(p) + 1).padStart(2, '0')}</span><span class="card-tag" aria-hidden="true">${p.category === 'culture' ? '人文足迹' : '自然奇境'}</span><span class="card-title"><span id="card-title-${p.id}"><strong>${p.name}</strong><small>${p.en.toUpperCase()}</small></span><span class="card-arrow">${icon('arrow')}</span></span></button>`).join('');
   $('#destination-track').querySelectorAll('[data-place]').forEach(b => b.onclick = () => selectPlace(b.dataset.place));
+  updatePlaceMarkers?.(state);
   scheduleMarkers();
 }
 
@@ -142,7 +144,7 @@ function selectPlace(id, fromTour = false) {
   state.selected = p.id;
   renderPlace(p);
   updateCardSelection();
-  markers.forEach(m => m.element.classList.toggle('selected', m.place.id === id));
+  updatePlaceMarkers?.(state);
   if (map && state.mapReady) map.flyTo({ center: p.coordinate, zoom: p.zoom, pitch: state.terrain ? p.pitch : 0, bearing: -18, padding: mapPadding(), duration: reducedMotion ? 0 : 2600, essential: true });
   $('.map-caption').innerHTML = `<span class="live-dot"></span> ${p.name} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
   history.replaceState(null, '', `#${p.id}`);
@@ -154,7 +156,7 @@ function selectLandform(feature) {
   const p = feature.properties;
   setLandformVisible(p.kind, true);
   landforms.select(feature);
-  markers.forEach(m => m.element.classList.remove('selected'));
+  updatePlaceMarkers?.(state);
   $('.intro').classList.add('dismissed');
   const panel = $('.place-panel');
   panel.classList.remove('place-reading', 'reading-expanded');
@@ -189,7 +191,7 @@ function resetView() {
   stopTour(); state.selected = null; state.landform = null; landforms?.clear();
   $('.place-panel').hidden = true; $('.place-panel').classList.remove('landform-detail', 'place-reading', 'reading-expanded'); $('.intro').classList.remove('dismissed');
   $('#landform-select').value = '';
-  markers.forEach(m => m.element.classList.remove('selected'));
+  updatePlaceMarkers?.(state);
   updateCardSelection();
   if (map && state.mapReady) map.easeTo({ ...overviewCamera(), duration: reducedMotion ? 0 : 2200 });
   $('.map-caption').innerHTML = `<span class="live-dot"></span> 中国全景 <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
@@ -381,7 +383,8 @@ async function initMap() {
       if (currentPlace?.id !== initialPlace?.id) map.jumpTo(currentPlace ? placeCamera(currentPlace) : overviewCamera());
       if (currentPlace) $('.map-caption').innerHTML = `<span class="live-dot"></span> ${currentPlace.name} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
       applyBorders();
-      addMarkers();
+      updatePlaceMarkers = addPlaceMarkers(map, places, highlights, selectPlace);
+      updatePlaceMarkers(state);
       window.__atlas = { map, state, places, selectPlace, startTour, stopTour, resetView, selectLandform, setLandformVisible, get landforms() { return landforms; } };
     });
     let enhanced = false;
@@ -415,23 +418,9 @@ async function initMap() {
   } catch (error) { console.error(error); $('#map-status').textContent = '浏览器暂不支持三维地图'; showToast('请使用支持 WebGL 的现代浏览器，浏览三维山河'); }
 }
 
-function addMarkers() {
-  places.forEach(p => {
-    const el = document.createElement('button'); el.className = `map-marker ${p.category}`; el.setAttribute('aria-label', `地图地点：${p.name}`);
-    el.innerHTML = `<span class="marker-dot"></span><span class="marker-label">${p.name}</span>`;
-    el.onclick = e => { e.stopPropagation(); selectPlace(p.id); };
-    el.dataset.id = p.id;
-    new maplibregl.Marker({ element: el, anchor: 'left', offset: [-9, 0] }).setLngLat(p.coordinate).addTo(map);
-    markers.push({ element: el, place: p });
-  });
-  const labels = [ ['青 藏 高 原', 87, 33], ['塔 里 木 盆 地', 82.5, 39], ['内 蒙 古 高 原', 111, 44], ['东 北 平 原', 126, 47], ['华 北 平 原', 116, 36], ['四 川 盆 地', 105.2, 30.8], ['南 海', 118.5, 18], ['台 湾 岛', 121, 23.7], ['海 南 岛', 109.5, 19.2] ];
-  labels.forEach(([name, lon, lat]) => { const el = document.createElement('span'); el.className = 'geography-label'; el.textContent = name; const marker = new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).addTo(map); marker.getElement().removeAttribute('tabindex'); marker.getElement().removeAttribute('role'); });
-  scheduleMarkers();
-}
-
 function scheduleMarkers() {
   if (!map || markerFrame || markerTimer) return;
-  // Marker positions are animated by MapLibre; only collision checks need throttling.
+  // Native map layers handle labels; only the coordinate readout is throttled.
   markerTimer = setTimeout(() => {
     markerTimer = null;
     markerFrame = requestAnimationFrame(() => { markerFrame = null; lastMarkerUpdate = performance.now(); updateMarkers(); });
@@ -442,29 +431,6 @@ function updateMarkers() {
   const c = map.getCenter();
   $('#coordinates').textContent = `${Math.abs(c.lng).toFixed(2)}° ${c.lng >= 0 ? 'E' : 'W'}　 ${Math.abs(c.lat).toFixed(2)}° ${c.lat >= 0 ? 'N' : 'S'}`;
   $('.compass-button .icon').style.transform = `rotate(${-map.getBearing()}deg)`;
-  const wide = innerWidth > 800;
-  const zoom = map.getZoom();
-  const width = map.getContainer().clientWidth;
-  const height = map.getContainer().clientHeight;
-  const occupied = [];
-  const limit = zoom < 5 ? (wide ? 24 : 14) : zoom < 7 ? 38 : places.length;
-  const priority = p => p.id === state.selected ? -100 : highlights.includes(p.id) ? highlights.indexOf(p.id) : 20 + places.indexOf(p);
-  const ordered = [...markers].sort((a, b) => priority(a.place) - priority(b.place));
-  let visible = 0;
-  for (const { place, element } of ordered) {
-    const selected = place.id === state.selected;
-    const point = map.project(place.coordinate);
-    const box = { x: point.x - 9, y: point.y - 13, w: place.name.length * (wide ? 11 : 9) + 28, h: wide ? 29 : 27 };
-    const collision = occupied.some(b => box.x < b.x + b.w + 8 && box.x + box.w + 8 > b.x && box.y < b.y + b.h + 5 && box.y + box.h + 5 > b.y);
-    const inBounds = point.x > 8 && point.x < width - 30 && point.y > (wide ? 108 : 125) && point.y < height - (wide ? 255 : 205);
-    const matchesCategory = state.category === 'all' || place.category === state.category;
-    let geographyCollision = false;
-    if (!selected && matchesCategory && inBounds && !collision && visible < limit && landformLabelLayers.length) {
-      geographyCollision = map.queryRenderedFeatures([[box.x - 3, box.y - 3], [box.x + box.w + 3, box.y + box.h + 3]], { layers: landformLabelLayers }).some(f => (f.layer.paint['text-opacity'] ?? 1) > .08);
-    }
-    element.hidden = !selected && (!matchesCategory || !inBounds || collision || geographyCollision || visible >= limit);
-    if (!element.hidden) { occupied.push(box); visible++; }
-  }
 }
 
 renderCards(); bindUI();

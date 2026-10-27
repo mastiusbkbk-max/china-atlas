@@ -1,3 +1,5 @@
+import { placeLabelLayers } from './map-markers.js';
+
 // Overview geography stays draped over the same terrain as the imagery.
 export const landformLabelLayers = [];
 
@@ -103,10 +105,29 @@ export async function addLandforms(map, onSelect, collections) {
   const hitAt = point => map.queryRenderedFeatures([[point.x - 5, point.y - 5], [point.x + 5, point.y + 5]], { layers: hitLayers })
     .find(f => (f.layer.paint['text-opacity'] ?? f.layer.paint['line-opacity'] ?? 1) > .08);
   map.on('click', e => {
+    if (e.defaultPrevented) return;
     const hit = hitAt(e.point);
     if (hit) onSelect(features.find(f => f.properties.id === hit.properties.id));
   });
-  map.on('mousemove', e => { map.getCanvas().style.cursor = hitAt(e.point) ? 'pointer' : ''; });
+  const hoverLayers = [...placeLabelLayers.filter(id => map.getLayer(id)), ...hitLayers];
+  let hoverPoint;
+  let hoverFrame;
+  map.on('mousemove', e => {
+    hoverPoint = e.point;
+    if (hoverFrame) return;
+    hoverFrame = requestAnimationFrame(() => {
+      hoverFrame = null;
+      const point = hoverPoint;
+      const hit = map.queryRenderedFeatures([[point.x - 5, point.y - 5], [point.x + 5, point.y + 5]], { layers: hoverLayers })
+        .some(f => (f.layer.paint['text-opacity'] ?? f.layer.paint['line-opacity'] ?? 1) > .08);
+      map.getCanvas().style.cursor = hit ? 'pointer' : '';
+    });
+  });
+  map.getCanvas().addEventListener('mouseleave', () => {
+    if (hoverFrame) cancelAnimationFrame(hoverFrame);
+    hoverFrame = null;
+    map.getCanvas().style.cursor = '';
+  });
   let selected = null;
   return {
     features,

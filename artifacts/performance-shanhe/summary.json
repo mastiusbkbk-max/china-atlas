@@ -1,0 +1,2024 @@
+{
+  "generated": "2026-10-27T01:51:00.873Z",
+  "runs": [
+    {
+      "label": "baseline",
+      "base": "http://127.0.0.1:4191/china-atlas/",
+      "conditions": {
+        "width": 1496,
+        "height": 900,
+        "dprs": [
+          1,
+          2
+        ],
+        "repeats": 3,
+        "network": "Loopback, no network throttling, external requests blocked.",
+        "cache": "Cold = HTTP cache and origin storage cleared; warm = genuine Page.reload with HTTP cache enabled. GPU shader and OS caches not cleared; process warmup kept separately.",
+        "paint": "Textured map render + two rAF callbacks as presentation upper bound; real pointer drag proves input is accepted.",
+        "targets": {
+          "mapMs": 640,
+          "warmMs": 80,
+          "clickMs": 40,
+          "ordinaryFps": 100
+        }
+      },
+      "gpu": {
+        "vendor": "Google Inc. (Apple)",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "dpr": 1,
+        "canvas": [
+          1496,
+          900
+        ]
+      },
+      "warmup": {
+        "dpr": 1,
+        "trial": 0,
+        "cache": "cold",
+        "api": 175.5,
+        "firstRaster": {
+          "time": 257.1999999284744,
+          "renderable": 16,
+          "textured": 16,
+          "loaded": false,
+          "errors": 0,
+          "zooms": [
+            4
+          ],
+          "values": [
+            [
+              10,
+              25,
+              0,
+              255
+            ],
+            [
+              61,
+              69,
+              40,
+              255
+            ],
+            [
+              66,
+              77,
+              47,
+              255
+            ],
+            [
+              131,
+              108,
+              64,
+              255
+            ],
+            [
+              84,
+              84,
+              49,
+              255
+            ],
+            [
+              65,
+              69,
+              40,
+              255
+            ],
+            [
+              163,
+              152,
+              135,
+              255
+            ],
+            [
+              159,
+              139,
+              109,
+              255
+            ],
+            [
+              161,
+              143,
+              109,
+              255
+            ]
+          ],
+          "distinct": 9
+        },
+        "mapReady": {
+          "time": 288.7999999523163,
+          "renderTime": 272.2999999523163,
+          "renderable": 27,
+          "textured": 27,
+          "loaded": true,
+          "errors": 0,
+          "zooms": [
+            4
+          ]
+        },
+        "navigation": [
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/",
+            "entryType": "navigation",
+            "startTime": 0,
+            "duration": 181,
+            "initiatorType": "navigation",
+            "deliveryType": "",
+            "nextHopProtocol": "http/1.1",
+            "renderBlockingStatus": "non-blocking",
+            "contentEncoding": "",
+            "workerStart": 0,
+            "workerRouterEvaluationStart": 0,
+            "workerCacheLookupStart": 0,
+            "workerMatchedSourceType": "",
+            "workerFinalSourceType": "",
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 0.6000000238418579,
+            "domainLookupStart": 4.699999928474426,
+            "domainLookupEnd": 4.699999928474426,
+            "connectStart": 4.699999928474426,
+            "secureConnectionStart": 0,
+            "connectEnd": 5,
+            "requestStart": 5.299999952316284,
+            "responseStart": 8.899999976158142,
+            "firstInterimResponseStart": 0,
+            "finalResponseHeadersStart": 8.899999976158142,
+            "responseEnd": 9.600000023841858,
+            "transferSize": 1191,
+            "encodedBodySize": 891,
+            "decodedBodySize": 891,
+            "responseStatus": 200,
+            "serverTiming": [],
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "domInteractive": 20.600000023841858,
+            "domContentLoadedEventStart": 37.199999928474426,
+            "domContentLoadedEventEnd": 37.199999928474426,
+            "domComplete": 180.89999997615814,
+            "loadEventStart": 181,
+            "loadEventEnd": 181,
+            "type": "navigate",
+            "redirectCount": 0,
+            "activationStart": 0,
+            "criticalCHRestart": 0,
+            "notRestoredReasons": null,
+            "confidence": {}
+          }
+        ],
+        "pageShows": [
+          {
+            "time": 181,
+            "persisted": false
+          }
+        ],
+        "gpu": {
+          "vendor": "Google Inc. (Apple)",
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+          "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+          "dpr": 1,
+          "canvas": [
+            1496,
+            900
+          ]
+        },
+        "marks": [
+          {
+            "name": "atlas-shell",
+            "time": 35.299999952316284
+          },
+          {
+            "name": "atlas-interactive",
+            "time": 173.39999997615814
+          },
+          {
+            "name": "atlas-imagery",
+            "time": 301.10000002384186
+          }
+        ],
+        "longTasks": [
+          {
+            "startTime": 89.29999995231628,
+            "duration": 78
+          }
+        ],
+        "resources": [
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/assets/index-CoMnz_ts.js",
+            "startTime": 16.5,
+            "responseEnd": 21.100000023841858,
+            "duration": 4.600000023841858,
+            "transferSize": 204998,
+            "encodedBodySize": 204698,
+            "decodedBodySize": 204698,
+            "initiatorType": "script"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/assets/index-DMayBZtN.css",
+            "startTime": 16.600000023841858,
+            "responseEnd": 20.5,
+            "duration": 3.899999976158142,
+            "transferSize": 119704,
+            "encodedBodySize": 119404,
+            "decodedBodySize": 119404,
+            "initiatorType": "link"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/assets/maplibre-gl-Y_FXurWg.js",
+            "startTime": 36.299999952316284,
+            "responseEnd": 42.699999928474426,
+            "duration": 6.399999976158142,
+            "transferSize": 1095288,
+            "encodedBodySize": 1094988,
+            "decodedBodySize": 1094988,
+            "initiatorType": "script"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/everest.webp",
+            "startTime": 36.39999997615814,
+            "responseEnd": 39.5,
+            "duration": 3.100000023841858,
+            "transferSize": 31904,
+            "encodedBodySize": 31604,
+            "decodedBodySize": 31604,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/yangtze.webp",
+            "startTime": 36.60000002384186,
+            "responseEnd": 40.10000002384186,
+            "duration": 3.5,
+            "transferSize": 20456,
+            "encodedBodySize": 20156,
+            "decodedBodySize": 20156,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/guilin.webp",
+            "startTime": 36.60000002384186,
+            "responseEnd": 40.799999952316284,
+            "duration": 4.199999928474426,
+            "transferSize": 28880,
+            "encodedBodySize": 28580,
+            "decodedBodySize": 28580,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/dunhuang.webp",
+            "startTime": 36.699999928474426,
+            "responseEnd": 41.5,
+            "duration": 4.800000071525574,
+            "transferSize": 7012,
+            "encodedBodySize": 6712,
+            "decodedBodySize": 6712,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/huangshan.webp",
+            "startTime": 36.699999928474426,
+            "responseEnd": 42.299999952316284,
+            "duration": 5.600000023841858,
+            "transferSize": 29780,
+            "encodedBodySize": 29480,
+            "decodedBodySize": 29480,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/fonts/noto-serif-sc-600-subset.woff2",
+            "startTime": 40.699999928474426,
+            "responseEnd": 46.10000002384186,
+            "duration": 5.400000095367432,
+            "transferSize": 143944,
+            "encodedBodySize": 143644,
+            "decodedBodySize": 143644,
+            "initiatorType": "css"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/fonts/noto-serif-sc-600-supplement.woff2",
+            "startTime": 41.699999928474426,
+            "responseEnd": 93.5,
+            "duration": 51.800000071525574,
+            "transferSize": 52244,
+            "encodedBodySize": 51944,
+            "decodedBodySize": 51944,
+            "initiatorType": "css"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/zhangjiajie.webp",
+            "startTime": 84.5,
+            "responseEnd": 89.39999997615814,
+            "duration": 4.899999976158142,
+            "transferSize": 34596,
+            "encodedBodySize": 34296,
+            "decodedBodySize": 34296,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/kanas.webp",
+            "startTime": 84.5,
+            "responseEnd": 91.10000002384186,
+            "duration": 6.600000023841858,
+            "transferSize": 37114,
+            "encodedBodySize": 36814,
+            "decodedBodySize": 36814,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/qinghai.webp",
+            "startTime": 84.5,
+            "responseEnd": 91.5,
+            "duration": 7,
+            "transferSize": 20910,
+            "encodedBodySize": 20610,
+            "decodedBodySize": 20610,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/forbidden-city.webp",
+            "startTime": 84.5,
+            "responseEnd": 92.19999992847443,
+            "duration": 7.699999928474426,
+            "transferSize": 26834,
+            "encodedBodySize": 26534,
+            "decodedBodySize": 26534,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/great-wall.webp",
+            "startTime": 84.60000002384186,
+            "responseEnd": 92.69999992847443,
+            "duration": 8.099999904632568,
+            "transferSize": 37488,
+            "encodedBodySize": 37188,
+            "decodedBodySize": 37188,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/images/thumbs/wuyi.webp",
+            "startTime": 84.60000002384186,
+            "responseEnd": 92.89999997615814,
+            "duration": 8.299999952316284,
+            "transferSize": 37084,
+            "encodedBodySize": 36784,
+            "decodedBodySize": 36784,
+            "initiatorType": "img"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/data/tiles-detail.json",
+            "startTime": 98.89999997615814,
+            "responseEnd": 102.29999995231628,
+            "duration": 3.399999976158142,
+            "transferSize": 67002,
+            "encodedBodySize": 66702,
+            "decodedBodySize": 66702,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/data/mountains.geojson",
+            "startTime": 98.89999997615814,
+            "responseEnd": 102.5,
+            "duration": 3.600000023841858,
+            "transferSize": 22379,
+            "encodedBodySize": 22079,
+            "decodedBodySize": 22079,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/data/rivers.geojson",
+            "startTime": 99,
+            "responseEnd": 103.89999997615814,
+            "duration": 4.899999976158142,
+            "transferSize": 498895,
+            "encodedBodySize": 498595,
+            "decodedBodySize": 498595,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/6.jpg",
+            "startTime": 220.60000002384186,
+            "responseEnd": 224.39999997615814,
+            "duration": 3.799999952316284,
+            "transferSize": 20516,
+            "encodedBodySize": 20216,
+            "decodedBodySize": 20216,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/5.jpg",
+            "startTime": 220.69999992847443,
+            "responseEnd": 225.10000002384186,
+            "duration": 4.400000095367432,
+            "transferSize": 17348,
+            "encodedBodySize": 17048,
+            "decodedBodySize": 17048,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/6.jpg",
+            "startTime": 220.79999995231628,
+            "responseEnd": 225.19999992847443,
+            "duration": 4.399999976158142,
+            "transferSize": 15404,
+            "encodedBodySize": 15104,
+            "decodedBodySize": 15104,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/6.jpg",
+            "startTime": 220.79999995231628,
+            "responseEnd": 225.79999995231628,
+            "duration": 5,
+            "transferSize": 20716,
+            "encodedBodySize": 20416,
+            "decodedBodySize": 20416,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/7.jpg",
+            "startTime": 220.79999995231628,
+            "responseEnd": 226.29999995231628,
+            "duration": 5.5,
+            "transferSize": 14251,
+            "encodedBodySize": 13951,
+            "decodedBodySize": 13951,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/5.jpg",
+            "startTime": 220.89999997615814,
+            "responseEnd": 227,
+            "duration": 6.100000023841858,
+            "transferSize": 15017,
+            "encodedBodySize": 14717,
+            "decodedBodySize": 14717,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/5.jpg",
+            "startTime": 220.89999997615814,
+            "responseEnd": 227.60000002384186,
+            "duration": 6.700000047683716,
+            "transferSize": 18009,
+            "encodedBodySize": 17709,
+            "decodedBodySize": 17709,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/7.jpg",
+            "startTime": 220.89999997615814,
+            "responseEnd": 227.79999995231628,
+            "duration": 6.899999976158142,
+            "transferSize": 13336,
+            "encodedBodySize": 13036,
+            "decodedBodySize": 13036,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/7.jpg",
+            "startTime": 220.89999997615814,
+            "responseEnd": 228.39999997615814,
+            "duration": 7.5,
+            "transferSize": 10029,
+            "encodedBodySize": 9729,
+            "decodedBodySize": 9729,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/4.jpg",
+            "startTime": 221,
+            "responseEnd": 229,
+            "duration": 8,
+            "transferSize": 12601,
+            "encodedBodySize": 12301,
+            "decodedBodySize": 12301,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/6.jpg",
+            "startTime": 221,
+            "responseEnd": 229.60000002384186,
+            "duration": 8.600000023841858,
+            "transferSize": 9168,
+            "encodedBodySize": 8868,
+            "decodedBodySize": 8868,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/4.jpg",
+            "startTime": 221.10000002384186,
+            "responseEnd": 230,
+            "duration": 8.899999976158142,
+            "transferSize": 13053,
+            "encodedBodySize": 12753,
+            "decodedBodySize": 12753,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/5.jpg",
+            "startTime": 221.10000002384186,
+            "responseEnd": 230.39999997615814,
+            "duration": 9.299999952316284,
+            "transferSize": 11607,
+            "encodedBodySize": 11307,
+            "decodedBodySize": 11307,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/6.jpg",
+            "startTime": 221.10000002384186,
+            "responseEnd": 231,
+            "duration": 9.899999976158142,
+            "transferSize": 17849,
+            "encodedBodySize": 17549,
+            "decodedBodySize": 17549,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/4.jpg",
+            "startTime": 221.19999992847443,
+            "responseEnd": 231.5,
+            "duration": 10.300000071525574,
+            "transferSize": 13704,
+            "encodedBodySize": 13404,
+            "decodedBodySize": 13404,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/5.jpg",
+            "startTime": 221.29999995231628,
+            "responseEnd": 232.29999995231628,
+            "duration": 11,
+            "transferSize": 15912,
+            "encodedBodySize": 15612,
+            "decodedBodySize": 15612,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/assets/maplibre-gl-worker-BrB25tGK.mjs",
+            "startTime": 233.79999995231628,
+            "responseEnd": 180.19999992847443,
+            "duration": -53.60000002384186,
+            "transferSize": 0,
+            "encodedBodySize": 518806,
+            "decodedBodySize": 518806,
+            "initiatorType": "other"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/assets/maplibre-gl-worker-BrB25tGK.mjs",
+            "startTime": 233.79999995231628,
+            "responseEnd": 180.10000002384186,
+            "duration": -53.699999928474426,
+            "transferSize": 519106,
+            "encodedBodySize": 518806,
+            "decodedBodySize": 518806,
+            "initiatorType": "other"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/7.jpg",
+            "startTime": 247,
+            "responseEnd": 250.10000002384186,
+            "duration": 3.100000023841858,
+            "transferSize": 10241,
+            "encodedBodySize": 9941,
+            "decodedBodySize": 9941,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/7.jpg",
+            "startTime": 247.89999997615814,
+            "responseEnd": 252.60000002384186,
+            "duration": 4.700000047683716,
+            "transferSize": 10861,
+            "encodedBodySize": 10561,
+            "decodedBodySize": 10561,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/4.jpg",
+            "startTime": 248,
+            "responseEnd": 254.89999997615814,
+            "duration": 6.899999976158142,
+            "transferSize": 14006,
+            "encodedBodySize": 13706,
+            "decodedBodySize": 13706,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/4.jpg",
+            "startTime": 248.10000002384186,
+            "responseEnd": 255.79999995231628,
+            "duration": 7.699999928474426,
+            "transferSize": 14491,
+            "encodedBodySize": 14191,
+            "decodedBodySize": 14191,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/3.jpg",
+            "startTime": 248.29999995231628,
+            "responseEnd": 256.1999999284744,
+            "duration": 7.899999976158142,
+            "transferSize": 13449,
+            "encodedBodySize": 13149,
+            "decodedBodySize": 13149,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/3.jpg",
+            "startTime": 248.39999997615814,
+            "responseEnd": 256.89999997615814,
+            "duration": 8.5,
+            "transferSize": 12055,
+            "encodedBodySize": 11755,
+            "decodedBodySize": 11755,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/9/5.jpg",
+            "startTime": 248.5,
+            "responseEnd": 257.2999999523163,
+            "duration": 8.799999952316284,
+            "transferSize": 15966,
+            "encodedBodySize": 15666,
+            "decodedBodySize": 15666,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/3.jpg",
+            "startTime": 248.5,
+            "responseEnd": 257.6999999284744,
+            "duration": 9.199999928474426,
+            "transferSize": 10637,
+            "encodedBodySize": 10337,
+            "decodedBodySize": 10337,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/15/4.jpg",
+            "startTime": 248.69999992847443,
+            "responseEnd": 258.10000002384186,
+            "duration": 9.400000095367432,
+            "transferSize": 13439,
+            "encodedBodySize": 13139,
+            "decodedBodySize": 13139,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/9/4.jpg",
+            "startTime": 249.19999992847443,
+            "responseEnd": 258.2999999523163,
+            "duration": 9.100000023841858,
+            "transferSize": 15684,
+            "encodedBodySize": 15384,
+            "decodedBodySize": 15384,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/15/3.jpg",
+            "startTime": 249.39999997615814,
+            "responseEnd": 258.6999999284744,
+            "duration": 9.299999952316284,
+            "transferSize": 8279,
+            "encodedBodySize": 7979,
+            "decodedBodySize": 7979,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/data/photo-sources.json",
+            "startTime": 302.5,
+            "responseEnd": 304.6999999284744,
+            "duration": 2.1999999284744263,
+            "transferSize": 94263,
+            "encodedBodySize": 93963,
+            "decodedBodySize": 93963,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/data/detail-photos-nature.json",
+            "startTime": 302.60000002384186,
+            "responseEnd": 304.89999997615814,
+            "duration": 2.299999952316284,
+            "transferSize": 57476,
+            "encodedBodySize": 57176,
+            "decodedBodySize": 57176,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/data/detail-photos-culture.json",
+            "startTime": 302.60000002384186,
+            "responseEnd": 305.2999999523163,
+            "duration": 2.6999999284744263,
+            "transferSize": 60787,
+            "encodedBodySize": 60487,
+            "decodedBodySize": 60487,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/fonts/noto-serif-sc-600-geography.woff2",
+            "startTime": 303,
+            "responseEnd": 316.1999999284744,
+            "duration": 13.199999928474426,
+            "transferSize": 12004,
+            "encodedBodySize": 11704,
+            "decodedBodySize": 11704,
+            "initiatorType": "css"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/24/12.jpg",
+            "startTime": 333.89999997615814,
+            "responseEnd": 338.89999997615814,
+            "duration": 5,
+            "transferSize": 22628,
+            "encodedBodySize": 22328,
+            "decodedBodySize": 22328,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/22/14.jpg",
+            "startTime": 333.89999997615814,
+            "responseEnd": 339.5,
+            "duration": 5.600000023841858,
+            "transferSize": 13041,
+            "encodedBodySize": 12741,
+            "decodedBodySize": 12741,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/22/15.jpg",
+            "startTime": 333.89999997615814,
+            "responseEnd": 347.7999999523163,
+            "duration": 13.899999976158142,
+            "transferSize": 10668,
+            "encodedBodySize": 10368,
+            "decodedBodySize": 10368,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/23/14.jpg",
+            "startTime": 334,
+            "responseEnd": 348.1999999284744,
+            "duration": 14.199999928474426,
+            "transferSize": 10957,
+            "encodedBodySize": 10657,
+            "decodedBodySize": 10657,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/24/13.jpg",
+            "startTime": 334,
+            "responseEnd": 352.60000002384186,
+            "duration": 18.600000023841858,
+            "transferSize": 26568,
+            "encodedBodySize": 26268,
+            "decodedBodySize": 26268,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/23/15.jpg",
+            "startTime": 334,
+            "responseEnd": 353.6999999284744,
+            "duration": 19.699999928474426,
+            "transferSize": 6330,
+            "encodedBodySize": 6030,
+            "decodedBodySize": 6030,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/25/12.jpg",
+            "startTime": 334,
+            "responseEnd": 356.6999999284744,
+            "duration": 22.699999928474426,
+            "transferSize": 19758,
+            "encodedBodySize": 19458,
+            "decodedBodySize": 19458,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/25/13.jpg",
+            "startTime": 334,
+            "responseEnd": 360.60000002384186,
+            "duration": 26.600000023841858,
+            "transferSize": 20868,
+            "encodedBodySize": 20568,
+            "decodedBodySize": 20568,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/24/14.jpg",
+            "startTime": 334,
+            "responseEnd": 360.5,
+            "duration": 26.5,
+            "transferSize": 15301,
+            "encodedBodySize": 15001,
+            "decodedBodySize": 15001,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/24/15.jpg",
+            "startTime": 334.10000002384186,
+            "responseEnd": 361.2999999523163,
+            "duration": 27.199999928474426,
+            "transferSize": 12595,
+            "encodedBodySize": 12295,
+            "decodedBodySize": 12295,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/26/12.jpg",
+            "startTime": 334.10000002384186,
+            "responseEnd": 363.10000002384186,
+            "duration": 29,
+            "transferSize": 18438,
+            "encodedBodySize": 18138,
+            "decodedBodySize": 18138,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/25/14.jpg",
+            "startTime": 334.10000002384186,
+            "responseEnd": 363.1999999284744,
+            "duration": 29.09999990463257,
+            "transferSize": 17774,
+            "encodedBodySize": 17474,
+            "decodedBodySize": 17474,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/26/13.jpg",
+            "startTime": 334.1999999284744,
+            "responseEnd": 363.39999997615814,
+            "duration": 29.200000047683716,
+            "transferSize": 18705,
+            "encodedBodySize": 18405,
+            "decodedBodySize": 18405,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/25/15.jpg",
+            "startTime": 334.2999999523163,
+            "responseEnd": 363.89999997615814,
+            "duration": 29.600000023841858,
+            "transferSize": 10593,
+            "encodedBodySize": 10293,
+            "decodedBodySize": 10293,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/26/14.jpg",
+            "startTime": 334.2999999523163,
+            "responseEnd": 364,
+            "duration": 29.700000047683716,
+            "transferSize": 14314,
+            "encodedBodySize": 14014,
+            "decodedBodySize": 14014,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/27/12.jpg",
+            "startTime": 334.2999999523163,
+            "responseEnd": 364.89999997615814,
+            "duration": 30.600000023841858,
+            "transferSize": 15497,
+            "encodedBodySize": 15197,
+            "decodedBodySize": 15197,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/27/13.jpg",
+            "startTime": 391.5,
+            "responseEnd": 395.1999999284744,
+            "duration": 3.6999999284744263,
+            "transferSize": 11364,
+            "encodedBodySize": 11064,
+            "decodedBodySize": 11064,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/26/15.jpg",
+            "startTime": 391.6999999284744,
+            "responseEnd": 395.5,
+            "duration": 3.8000000715255737,
+            "transferSize": 16683,
+            "encodedBodySize": 16383,
+            "decodedBodySize": 16383,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/27/14.jpg",
+            "startTime": 400.7999999523163,
+            "responseEnd": 403.1999999284744,
+            "duration": 2.399999976158142,
+            "transferSize": 9963,
+            "encodedBodySize": 9663,
+            "decodedBodySize": 9663,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/27/15.jpg",
+            "startTime": 401,
+            "responseEnd": 403.6999999284744,
+            "duration": 2.6999999284744263,
+            "transferSize": 15124,
+            "encodedBodySize": 14824,
+            "decodedBodySize": 14824,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/28/14.jpg",
+            "startTime": 403.6999999284744,
+            "responseEnd": 408.7999999523163,
+            "duration": 5.100000023841858,
+            "transferSize": 13606,
+            "encodedBodySize": 13306,
+            "decodedBodySize": 13306,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/29/14.jpg",
+            "startTime": 403.89999997615814,
+            "responseEnd": 409,
+            "duration": 5.100000023841858,
+            "transferSize": 9845,
+            "encodedBodySize": 9545,
+            "decodedBodySize": 9545,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/6/3.webp",
+            "startTime": 404,
+            "responseEnd": 409.6999999284744,
+            "duration": 5.699999928474426,
+            "transferSize": 76464,
+            "encodedBodySize": 76164,
+            "decodedBodySize": 76164,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/6/2.webp",
+            "startTime": 404.2999999523163,
+            "responseEnd": 410.6999999284744,
+            "duration": 6.399999976158142,
+            "transferSize": 75094,
+            "encodedBodySize": 74794,
+            "decodedBodySize": 74794,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/5/3.webp",
+            "startTime": 404.39999997615814,
+            "responseEnd": 414.39999997615814,
+            "duration": 10,
+            "transferSize": 73210,
+            "encodedBodySize": 72910,
+            "decodedBodySize": 72910,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/5/2.webp",
+            "startTime": 404.5,
+            "responseEnd": 414.60000002384186,
+            "duration": 10.100000023841858,
+            "transferSize": 57914,
+            "encodedBodySize": 57614,
+            "decodedBodySize": 57614,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/7/3.webp",
+            "startTime": 404.7999999523163,
+            "responseEnd": 416.10000002384186,
+            "duration": 11.300000071525574,
+            "transferSize": 79876,
+            "encodedBodySize": 79576,
+            "decodedBodySize": 79576,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/7/2.webp",
+            "startTime": 404.7999999523163,
+            "responseEnd": 417,
+            "duration": 12.200000047683716,
+            "transferSize": 75036,
+            "encodedBodySize": 74736,
+            "decodedBodySize": 74736,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/3/4/2.webp",
+            "startTime": 404.89999997615814,
+            "responseEnd": 418.1999999284744,
+            "duration": 13.299999952316284,
+            "transferSize": 62512,
+            "encodedBodySize": 62212,
+            "decodedBodySize": 62212,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/2/3/0.webp",
+            "startTime": 405,
+            "responseEnd": 421.1999999284744,
+            "duration": 16.199999928474426,
+            "transferSize": 48688,
+            "encodedBodySize": 48388,
+            "decodedBodySize": 48388,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/2/3/1.webp",
+            "startTime": 405.10000002384186,
+            "responseEnd": 421.60000002384186,
+            "duration": 16.5,
+            "transferSize": 80312,
+            "encodedBodySize": 80012,
+            "decodedBodySize": 80012,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/2/2/1.webp",
+            "startTime": 405.60000002384186,
+            "responseEnd": 423,
+            "duration": 17.399999976158142,
+            "transferSize": 72602,
+            "encodedBodySize": 72302,
+            "decodedBodySize": 72302,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/1/1/0.webp",
+            "startTime": 409.7999999523163,
+            "responseEnd": 426.60000002384186,
+            "duration": 16.800000071525574,
+            "transferSize": 71132,
+            "encodedBodySize": 70832,
+            "decodedBodySize": 70832,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/12/5.webp",
+            "startTime": 410.10000002384186,
+            "responseEnd": 427.39999997615814,
+            "duration": 17.299999952316284,
+            "transferSize": 75642,
+            "encodedBodySize": 75342,
+            "decodedBodySize": 75342,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/11/6.webp",
+            "startTime": 410.1999999284744,
+            "responseEnd": 427.89999997615814,
+            "duration": 17.700000047683716,
+            "transferSize": 67676,
+            "encodedBodySize": 67376,
+            "decodedBodySize": 67376,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/13/5.webp",
+            "startTime": 410.2999999523163,
+            "responseEnd": 429.10000002384186,
+            "duration": 18.800000071525574,
+            "transferSize": 70396,
+            "encodedBodySize": 70096,
+            "decodedBodySize": 70096,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/11/5.webp",
+            "startTime": 410.6999999284744,
+            "responseEnd": 429.6999999284744,
+            "duration": 19,
+            "transferSize": 62572,
+            "encodedBodySize": 62272,
+            "decodedBodySize": 62272,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/12/4.webp",
+            "startTime": 410.6999999284744,
+            "responseEnd": 430,
+            "duration": 19.300000071525574,
+            "transferSize": 66146,
+            "encodedBodySize": 65846,
+            "decodedBodySize": 65846,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/14/6.webp",
+            "startTime": 412.5,
+            "responseEnd": 430.2999999523163,
+            "duration": 17.799999952316284,
+            "transferSize": 75088,
+            "encodedBodySize": 74788,
+            "decodedBodySize": 74788,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/13/4.webp",
+            "startTime": 412.6999999284744,
+            "responseEnd": 431.1999999284744,
+            "duration": 18.5,
+            "transferSize": 64886,
+            "encodedBodySize": 64586,
+            "decodedBodySize": 64586,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/14/5.webp",
+            "startTime": 420.7999999523163,
+            "responseEnd": 435.10000002384186,
+            "duration": 14.300000071525574,
+            "transferSize": 69226,
+            "encodedBodySize": 68926,
+            "decodedBodySize": 68926,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/10/6.webp",
+            "startTime": 421,
+            "responseEnd": 435.2999999523163,
+            "duration": 14.299999952316284,
+            "transferSize": 66420,
+            "encodedBodySize": 66120,
+            "decodedBodySize": 66120,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/11/4.webp",
+            "startTime": 421.60000002384186,
+            "responseEnd": 436,
+            "duration": 14.399999976158142,
+            "transferSize": 36692,
+            "encodedBodySize": 36392,
+            "decodedBodySize": 36392,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/10/5.webp",
+            "startTime": 421.7999999523163,
+            "responseEnd": 436.10000002384186,
+            "duration": 14.300000071525574,
+            "transferSize": 47346,
+            "encodedBodySize": 47046,
+            "decodedBodySize": 47046,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/10/7.webp",
+            "startTime": 441.60000002384186,
+            "responseEnd": 447.60000002384186,
+            "duration": 6,
+            "transferSize": 68058,
+            "encodedBodySize": 67758,
+            "decodedBodySize": 67758,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/14/4.webp",
+            "startTime": 443.89999997615814,
+            "responseEnd": 449.89999997615814,
+            "duration": 6,
+            "transferSize": 68888,
+            "encodedBodySize": 68588,
+            "decodedBodySize": 68588,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/10/4.webp",
+            "startTime": 444,
+            "responseEnd": 450.7999999523163,
+            "duration": 6.799999952316284,
+            "transferSize": 48408,
+            "encodedBodySize": 48108,
+            "decodedBodySize": 48108,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/12/3.webp",
+            "startTime": 444,
+            "responseEnd": 451.2999999523163,
+            "duration": 7.299999952316284,
+            "transferSize": 57550,
+            "encodedBodySize": 57250,
+            "decodedBodySize": 57250,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/13/3.webp",
+            "startTime": 444.1999999284744,
+            "responseEnd": 452.10000002384186,
+            "duration": 7.900000095367432,
+            "transferSize": 48904,
+            "encodedBodySize": 48604,
+            "decodedBodySize": 48604,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/9/5.webp",
+            "startTime": 444.1999999284744,
+            "responseEnd": 453.10000002384186,
+            "duration": 8.900000095367432,
+            "transferSize": 55934,
+            "encodedBodySize": 55634,
+            "decodedBodySize": 55634,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/14/3.webp",
+            "startTime": 444.2999999523163,
+            "responseEnd": 454.6999999284744,
+            "duration": 10.399999976158142,
+            "transferSize": 37820,
+            "encodedBodySize": 37520,
+            "decodedBodySize": 37520,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/15/4.webp",
+            "startTime": 444.2999999523163,
+            "responseEnd": 454.7999999523163,
+            "duration": 10.5,
+            "transferSize": 67102,
+            "encodedBodySize": 66802,
+            "decodedBodySize": 66802,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/9/4.webp",
+            "startTime": 444.2999999523163,
+            "responseEnd": 456.60000002384186,
+            "duration": 12.300000071525574,
+            "transferSize": 43498,
+            "encodedBodySize": 43198,
+            "decodedBodySize": 43198,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/4/15/3.webp",
+            "startTime": 444.39999997615814,
+            "responseEnd": 457.60000002384186,
+            "duration": 13.200000047683716,
+            "transferSize": 34238,
+            "encodedBodySize": 33938,
+            "decodedBodySize": 33938,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/22/14.webp",
+            "startTime": 444.39999997615814,
+            "responseEnd": 458.39999997615814,
+            "duration": 14,
+            "transferSize": 58222,
+            "encodedBodySize": 57922,
+            "decodedBodySize": 57922,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/24/12.webp",
+            "startTime": 444.5,
+            "responseEnd": 458.5,
+            "duration": 14,
+            "transferSize": 68246,
+            "encodedBodySize": 67946,
+            "decodedBodySize": 67946,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/22/15.webp",
+            "startTime": 444.5,
+            "responseEnd": 459.10000002384186,
+            "duration": 14.600000023841858,
+            "transferSize": 71984,
+            "encodedBodySize": 71684,
+            "decodedBodySize": 71684,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/23/14.webp",
+            "startTime": 444.60000002384186,
+            "responseEnd": 460.2999999523163,
+            "duration": 15.699999928474426,
+            "transferSize": 50980,
+            "encodedBodySize": 50680,
+            "decodedBodySize": 50680,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/24/13.webp",
+            "startTime": 444.60000002384186,
+            "responseEnd": 461.2999999523163,
+            "duration": 16.699999928474426,
+            "transferSize": 74770,
+            "encodedBodySize": 74470,
+            "decodedBodySize": 74470,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/23/15.webp",
+            "startTime": 445.2999999523163,
+            "responseEnd": 462.2999999523163,
+            "duration": 17,
+            "transferSize": 52060,
+            "encodedBodySize": 51760,
+            "decodedBodySize": 51760,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/25/12.webp",
+            "startTime": 467,
+            "responseEnd": 476.39999997615814,
+            "duration": 9.399999976158142,
+            "transferSize": 67270,
+            "encodedBodySize": 66970,
+            "decodedBodySize": 66970,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/24/14.webp",
+            "startTime": 467.1999999284744,
+            "responseEnd": 476.10000002384186,
+            "duration": 8.900000095367432,
+            "transferSize": 60324,
+            "encodedBodySize": 60024,
+            "decodedBodySize": 60024,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/25/13.webp",
+            "startTime": 467.2999999523163,
+            "responseEnd": 477,
+            "duration": 9.700000047683716,
+            "transferSize": 74302,
+            "encodedBodySize": 74002,
+            "decodedBodySize": 74002,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/24/15.webp",
+            "startTime": 467.39999997615814,
+            "responseEnd": 477.5,
+            "duration": 10.100000023841858,
+            "transferSize": 64340,
+            "encodedBodySize": 64040,
+            "decodedBodySize": 64040,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/26/12.webp",
+            "startTime": 467.60000002384186,
+            "responseEnd": 479.10000002384186,
+            "duration": 11.5,
+            "transferSize": 38882,
+            "encodedBodySize": 38582,
+            "decodedBodySize": 38582,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/25/14.webp",
+            "startTime": 467.60000002384186,
+            "responseEnd": 482,
+            "duration": 14.399999976158142,
+            "transferSize": 59088,
+            "encodedBodySize": 58788,
+            "decodedBodySize": 58788,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/26/13.webp",
+            "startTime": 467.6999999284744,
+            "responseEnd": 482.89999997615814,
+            "duration": 15.200000047683716,
+            "transferSize": 59358,
+            "encodedBodySize": 59058,
+            "decodedBodySize": 59058,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/25/15.webp",
+            "startTime": 467.6999999284744,
+            "responseEnd": 483.2999999523163,
+            "duration": 15.600000023841858,
+            "transferSize": 42122,
+            "encodedBodySize": 41822,
+            "decodedBodySize": 41822,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/26/14.webp",
+            "startTime": 467.7999999523163,
+            "responseEnd": 484.60000002384186,
+            "duration": 16.800000071525574,
+            "transferSize": 72884,
+            "encodedBodySize": 72584,
+            "decodedBodySize": 72584,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/27/12.webp",
+            "startTime": 468.1999999284744,
+            "responseEnd": 485.60000002384186,
+            "duration": 17.40000009536743,
+            "transferSize": 60178,
+            "encodedBodySize": 59878,
+            "decodedBodySize": 59878,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/27/13.webp",
+            "startTime": 468.39999997615814,
+            "responseEnd": 487.5,
+            "duration": 19.100000023841858,
+            "transferSize": 68262,
+            "encodedBodySize": 67962,
+            "decodedBodySize": 67962,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/26/15.webp",
+            "startTime": 468.5,
+            "responseEnd": 488.7999999523163,
+            "duration": 20.299999952316284,
+            "transferSize": 73562,
+            "encodedBodySize": 73262,
+            "decodedBodySize": 73262,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/27/14.webp",
+            "startTime": 468.6999999284744,
+            "responseEnd": 489.10000002384186,
+            "duration": 20.40000009536743,
+            "transferSize": 76982,
+            "encodedBodySize": 76682,
+            "decodedBodySize": 76682,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/27/15.webp",
+            "startTime": 469.1999999284744,
+            "responseEnd": 489.60000002384186,
+            "duration": 20.40000009536743,
+            "transferSize": 78340,
+            "encodedBodySize": 78040,
+            "decodedBodySize": 78040,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/28/14.webp",
+            "startTime": 469.2999999523163,
+            "responseEnd": 490.6999999284744,
+            "duration": 21.399999976158142,
+            "transferSize": 77340,
+            "encodedBodySize": 77040,
+            "decodedBodySize": 77040,
+            "initiatorType": "fetch"
+          },
+          {
+            "name": "http://127.0.0.1:4191/china-atlas/tiles/terrain-webp/5/29/14.webp",
+            "startTime": 469.5,
+            "responseEnd": 491.39999997615814,
+            "duration": 21.899999976158142,
+            "transferSize": 72318,
+            "encodedBodySize": 72018,
+            "decodedBodySize": 72018,
+            "initiatorType": "fetch"
+          }
+        ],
+        "network": [
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/assets/index-DMayBZtN.css",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/assets/index-CoMnz_ts.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/everest.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/yangtze.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/guilin.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/dunhuang.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/huangshan.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/fonts/noto-serif-sc-600-subset.woff2",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/assets/maplibre-gl-Y_FXurWg.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/zhangjiajie.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/kanas.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/qinghai.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/forbidden-city.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/great-wall.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/images/thumbs/wuyi.webp",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/fonts/noto-serif-sc-600-supplement.woff2",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/data/tiles-detail.json",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/data/mountains.geojson",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/data/rivers.geojson",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/6.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/5.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/6.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/6.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/7.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/5.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/5.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/7.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/7.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/6.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/5.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/6.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/11/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/5.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/7.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/7.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/10/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/12/3.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/13/3.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/9/5.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/14/3.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/15/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/9/4.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/4/15/3.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/data/photo-sources.json",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/data/detail-photos-nature.json",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/data/detail-photos-culture.json",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/fonts/noto-serif-sc-600-geography.woff2",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/24/12.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          },
+          {
+            "url": "http://127.0.0.1:4191/china-atlas/tiles/satellite/5/22/14.jpg",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false
+          }
+        ],
+        "fullReadyReached": true,
+        "fullReady": {
+          "time": 515.1000000238419,
+          "renderTime": 497.2999999523163,
+          "features": 84,
+          "terrain": {
+            "source": "terrain",
+            "exaggeration": 1.5
+          },
+          "zoom": 3.434652035666564,
+          "pitch": 38.00000000000001
+        },
+        "errors": [],
+        "pointerDragAccepted": true
+      },
+      "errors": {
+        "page": [],
+        "instrumentation": [
+          {
+            "instrumentation": "Invalid InterceptionId.",
+            "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/9/378/218.png"
+          },
+          {
+            "instrumentation": "Invalid InterceptionId.",
+            "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/9/218/376"
+          }
+        ],
+        "blockedRequests": 1139,
+        "distinctBlockedRequests": 481
+      },
+      "byDpr": [
+        {
+          "dpr": 1,
+          "navigation": {
+            "cold": {
+              "map": {
+                "samples": 3,
+                "median": 105.80000007152557,
+                "min": 95.70000004768372,
+                "max": 108.19999992847443
+              },
+              "full": {
+                "samples": 3,
+                "median": 316.39999997615814,
+                "min": 296.10000002384186,
+                "max": 321.8000000715256
+              },
+              "allRealDragsAccepted": true,
+              "fullReadyCount": 3
+            },
+            "warm-reload": {
+              "map": {
+                "samples": 3,
+                "median": 96.60000002384186,
+                "min": 94.5,
+                "max": 100.79999995231628
+              },
+              "full": {
+                "samples": 3,
+                "median": 295.89999997615814,
+                "min": 286.10000002384186,
+                "max": 301.39999997615814
+              },
+              "allRealDragsAccepted": true,
+              "fullReadyCount": 3
+            }
+          },
+          "clicks": {
+            "feedback": {
+              "samples": 3,
+              "median": 15.5,
+              "min": 14.700000047683716,
+              "max": 20.100000023841858
+            },
+            "dom": {
+              "samples": 3,
+              "median": 4.600000023841858,
+              "min": 4.200000047683716,
+              "max": 5.899999976158142
+            }
+          },
+          "frames": [
+            {
+              "scene": "overview",
+              "rendered": {
+                "frames": 241,
+                "fps": 119.9400299850075,
+                "medianMs": 8.299999952316284,
+                "p95Ms": 9.899999976158142,
+                "maxMs": 11.100000023841858
+              },
+              "raf": {
+                "frames": 241,
+                "fps": 119.91006744941294,
+                "medianMs": 8.300000000000068,
+                "p95Ms": 9.600000000000023,
+                "maxMs": 10.200000000000045
+              }
+            },
+            {
+              "scene": "everest",
+              "rendered": {
+                "frames": 241,
+                "fps": 120.01200119582762,
+                "medianMs": 8.300000071525574,
+                "p95Ms": 9,
+                "maxMs": 10.5
+              },
+              "raf": {
+                "frames": 241,
+                "fps": 120.01200120012005,
+                "medianMs": 8.300000000000182,
+                "p95Ms": 9,
+                "maxMs": 10.400000000000546
+              },
+              "complete": true,
+              "canvas": [
+                1496,
+                900
+              ]
+            }
+          ]
+        },
+        {
+          "dpr": 2,
+          "navigation": {
+            "cold": {
+              "map": {
+                "samples": 3,
+                "median": 112,
+                "min": 101.60000002384186,
+                "max": 116.79999995231628
+              },
+              "full": {
+                "samples": 3,
+                "median": 333.39999997615814,
+                "min": 302.89999997615814,
+                "max": 338.39999997615814
+              },
+              "allRealDragsAccepted": true,
+              "fullReadyCount": 3
+            },
+            "warm-reload": {
+              "map": {
+                "samples": 3,
+                "median": 101.5,
+                "min": 99.89999997615814,
+                "max": 103.20000004768372
+              },
+              "full": {
+                "samples": 3,
+                "median": 293.5,
+                "min": 283.2000000476837,
+                "max": 310.60000002384186
+              },
+              "allRealDragsAccepted": true,
+              "fullReadyCount": 3
+            }
+          },
+          "clicks": {
+            "feedback": {
+              "samples": 3,
+              "median": 16.399999976158142,
+              "min": 14,
+              "max": 16.399999976158142
+            },
+            "dom": {
+              "samples": 3,
+              "median": 4.199999928474426,
+              "min": 3.8000000715255737,
+              "max": 4.600000023841858
+            }
+          },
+          "frames": [
+            {
+              "scene": "overview",
+              "rendered": {
+                "frames": 241,
+                "fps": 119.89808663065183,
+                "medianMs": 8.299999952316284,
+                "p95Ms": 10.099999904632568,
+                "maxMs": 10.799999952316284
+              },
+              "raf": {
+                "frames": 241,
+                "fps": 119.88011988011988,
+                "medianMs": 8.299999999999955,
+                "p95Ms": 10,
+                "maxMs": 10.300000000000182
+              }
+            },
+            {
+              "scene": "everest",
+              "rendered": {
+                "frames": 241,
+                "fps": 119.98200270245522,
+                "medianMs": 8.300000071525574,
+                "p95Ms": 9.200000047683716,
+                "maxMs": 11
+              },
+              "raf": {
+                "frames": 241,
+                "fps": 120.01200120012,
+                "medianMs": 8.300000000000182,
+                "p95Ms": 9.099999999999454,
+                "maxMs": 10.300000000000182
+              },
+              "complete": true,
+              "canvas": [
+                2992,
+                1800
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
