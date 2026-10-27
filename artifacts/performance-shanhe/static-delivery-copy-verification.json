@@ -1,0 +1,8 @@
+{
+  "source": "/Users/haozhiheng/Documents/Playground/china-atlas/scripts/static-delivery.mjs",
+  "copy": "artifacts/performance-shanhe/static-delivery.mjs",
+  "bytes": 9587,
+  "sourceSha256": "38f2c22933739e0418b85c12b1b9c682d8090227ac7346ff8143a0852f8c46b0",
+  "copySha256": "38f2c22933739e0418b85c12b1b9c682d8090227ac7346ff8143a0852f8c46b0",
+  "byteIdentical": true
+}

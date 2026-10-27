@@ -1,0 +1,229 @@
+{
+  "url": "http://127.0.0.1:4210/china-atlas/",
+  "started": "2026-10-27T10:55:27.442Z",
+  "checks": [
+    {
+      "name": "DPR 1 full map and data",
+      "passed": true,
+      "destinations": 81,
+      "regions": 9,
+      "landforms": 84,
+      "terrain": {
+        "source": "terrain",
+        "exaggeration": 1.5
+      },
+      "canvas": [
+        1496,
+        900
+      ],
+      "visiblePlaces": [
+        "helanshan",
+        "victoria-harbour",
+        "jinshitan",
+        "sanya",
+        "huangguoshu",
+        "detian",
+        "siguniang",
+        "hengshan-north",
+        "taishan",
+        "great-wall",
+        "zhangjiajie"
+      ]
+    },
+    {
+      "name": "DPR 1 rendered region labels",
+      "passed": true,
+      "names": [
+        "内 蒙 古 高 原",
+        "东 北 平 原",
+        "青 藏 高 原",
+        "塔 里 木 盆 地",
+        "南 海",
+        "海 南 岛",
+        "台 湾 岛",
+        "四 川 盆 地",
+        "华 北 平 原"
+      ],
+      "count": 9
+    },
+    {
+      "name": "DPR 2 full map and data",
+      "passed": true,
+      "destinations": 81,
+      "regions": 9,
+      "landforms": 84,
+      "terrain": {
+        "source": "terrain",
+        "exaggeration": 1.5
+      },
+      "canvas": [
+        2992,
+        1800
+      ],
+      "visiblePlaces": [
+        "helanshan",
+        "victoria-harbour",
+        "jinshitan",
+        "sanya",
+        "huangguoshu",
+        "detian",
+        "siguniang",
+        "hengshan-north",
+        "taishan",
+        "great-wall",
+        "zhangjiajie"
+      ]
+    },
+    {
+      "name": "DPR 2 rendered region labels",
+      "passed": true,
+      "names": [
+        "内 蒙 古 高 原",
+        "东 北 平 原",
+        "青 藏 高 原",
+        "塔 里 木 盆 地",
+        "南 海",
+        "海 南 岛",
+        "台 湾 岛",
+        "四 川 盆 地",
+        "华 北 平 原"
+      ],
+      "count": 9
+    },
+    {
+      "name": "All 81 cards and final card content render after horizontal scrolling",
+      "passed": true,
+      "lastId": "maijishan",
+      "lastText": "麦积山石窟",
+      "image": [
+        480,
+        288
+      ],
+      "scroll": [
+        21629,
+        23037,
+        1408
+      ],
+      "contentVisibility": "auto"
+    },
+    {
+      "name": "Keyboard Tab reaches and reveals the final offscreen card",
+      "passed": true,
+      "active": "maijishan",
+      "last": "maijishan",
+      "rect": [
+        1182.5,
+        1452.09375
+      ],
+      "track": [
+        44,
+        1452
+      ]
+    },
+    {
+      "name": "Actual native label click and event arbitration",
+      "passed": true,
+      "selected": "helanshan",
+      "landform": null
+    },
+    {
+      "name": "PC rich reading and photo metadata",
+      "passed": true,
+      "chapters": 2,
+      "photoButtons": 2
+    },
+    {
+      "name": "Full photo dialog",
+      "passed": true,
+      "title": "贺兰山岩画 / 山河影像",
+      "count": "01 / 02"
+    },
+    {
+      "name": "Reset clears selection",
+      "passed": true
+    },
+    {
+      "name": "Nature classification",
+      "passed": true,
+      "filter": [
+        "all",
+        [
+          "!=",
+          [
+            "get",
+            "id"
+          ],
+          ""
+        ],
+        [
+          "==",
+          [
+            "get",
+            "category"
+          ],
+          "nature"
+        ]
+      ]
+    },
+    {
+      "name": "Cross-category search restores all places",
+      "passed": true
+    },
+    {
+      "name": "River visibility toggle",
+      "passed": true
+    },
+    {
+      "name": "Landform selector replaces place selection",
+      "passed": true,
+      "selected": "himalaya"
+    },
+    {
+      "name": "Direct place link",
+      "passed": true,
+      "hash": "#everest"
+    },
+    {
+      "name": "Selection before native layers install",
+      "passed": true,
+      "early": {
+        "beforeNative": true
+      },
+      "selected": "guilin"
+    },
+    {
+      "name": "Early first-card focus survives completion without replacing its node",
+      "passed": true,
+      "early": {
+        "initialCount": 5,
+        "id": "everest",
+        "afterArrow": 81,
+        "scrollAfterArrow": 569
+      },
+      "active": "everest"
+    },
+    {
+      "name": "Early carousel next request fills and scrolls all destinations immediately",
+      "passed": true,
+      "early": {
+        "initialCount": 5,
+        "id": "everest",
+        "afterArrow": 81,
+        "scrollAfterArrow": 569
+      }
+    },
+    {
+      "name": "Early classification changes remain consistent when completion runs",
+      "passed": true,
+      "initialCount": 5,
+      "category": "culture",
+      "cardCount": 37,
+      "expectedCount": 37
+    }
+  ],
+  "runtimeErrors": [],
+  "screenshotLimitation": "Headless Chromium GPU Page.captureScreenshot stalled at DPR2; DPR2 canvas and functional assertions were checked separately. Screenshots use DPR1.",
+  "pixelDecodingReference": "regression-images-pc.json: unchanged JPEG protocol already passed all six sample comparisons",
+  "completed": true,
+  "finished": "2026-10-27T10:55:41.676Z"
+}

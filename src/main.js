@@ -1,6 +1,4 @@
-import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import './style.css';
+import { mapEngine } from './map-engine.js';
 import { places, chapters, sources, themes, highlights, provinceNames } from './content.js';
 import { icon } from './icons.js';
 import { addLandforms, loadLandformData, landformBounds } from './landforms.js';
@@ -8,7 +6,6 @@ import { placeStories } from './place-stories.js';
 import { installTileProtocol, setDetailTileCoverage } from './map-tiles.js';
 import { addPlaceMarkers } from './map-markers.js';
 
-const mapEngine = import('maplibre-gl');
 let maplibregl;
 const assetUrl = path => `${import.meta.env.BASE_URL}${path.replace(/^\.?\//, '')}`;
 const thumbnail = p => assetUrl(p.image.replace('/images/', '/images/thumbs/').replace(/\.jpg$/, '.webp'));
@@ -84,11 +81,22 @@ app.innerHTML = `
 `;
 
 function filteredPlaces() { return places.filter(p => state.category === 'all' || p.category === state.category); }
-function renderCards() {
-  $('#destination-track').innerHTML = filteredPlaces().map((p, i) => `<button class="destination-card ${state.selected === p.id ? 'selected' : ''}" data-place="${p.id}" aria-labelledby="card-title-${p.id}"><img src="${thumbnail(p)}" alt="" width="480" height="300" decoding="async" fetchpriority="low" loading="${i < 5 ? 'eager' : 'lazy'}"><span class="card-shade"></span><span class="card-order" aria-hidden="true">${String(places.indexOf(p) + 1).padStart(2, '0')}</span><span class="card-tag" aria-hidden="true">${p.category === 'culture' ? '人文足迹' : '自然奇境'}</span><span class="card-title"><span id="card-title-${p.id}"><strong>${p.name}</strong><small>${p.en.toUpperCase()}</small></span><span class="card-arrow">${icon('arrow')}</span></span></button>`).join('');
+function cardMarkup(p, i) { return `<button class="destination-card ${state.selected === p.id ? 'selected' : ''}" data-place="${p.id}" aria-labelledby="card-title-${p.id}"><img src="${thumbnail(p)}" alt="" width="480" height="300" decoding="async" fetchpriority="low" loading="${i < 5 ? 'eager' : 'lazy'}"><span class="card-shade"></span><span class="card-order" aria-hidden="true">${String(places.indexOf(p) + 1).padStart(2, '0')}</span><span class="card-tag" aria-hidden="true">${p.category === 'culture' ? '人文足迹' : '自然奇境'}</span><span class="card-title"><span id="card-title-${p.id}"><strong>${p.name}</strong><small>${p.en.toUpperCase()}</small></span><span class="card-arrow">${icon('arrow')}</span></span></button>`; }
+function renderCards(visibleOnly = false) {
+  const cards = filteredPlaces();
+  $('#destination-track').innerHTML = (visibleOnly ? cards.slice(0, 5) : cards).map(cardMarkup).join('');
   $('#destination-track').querySelectorAll('[data-place]').forEach(b => b.onclick = () => selectPlace(b.dataset.place));
   updatePlaceMarkers?.(state);
   scheduleMarkers();
+}
+
+function completeCards() {
+  const track = $('#destination-track');
+  const start = track.childElementCount;
+  const remaining = filteredPlaces().slice(start);
+  if (!remaining.length) return;
+  track.insertAdjacentHTML('beforeend', remaining.map((p, i) => cardMarkup(p, start + i)).join(''));
+  track.querySelectorAll('[data-place]').forEach(b => b.onclick = () => selectPlace(b.dataset.place));
 }
 
 function safeText(text) { const el = document.createElement('span'); el.textContent = text; return el.innerHTML.replaceAll('"', '&quot;'); }
@@ -292,7 +300,7 @@ function bindUI() {
   $('#photo-prev').onclick = () => stepPhoto(-1); $('#photo-next').onclick = () => stepPhoto(1);
   $('.photo-dialog').addEventListener('keydown', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); stepPhoto(e.key === 'ArrowLeft' ? -1 : 1); } });
   $('#cards-prev').onclick = () => $('#destination-track').scrollBy({ left: -470, behavior: reducedMotion ? 'instant' : 'smooth' });
-  $('#cards-next').onclick = () => $('#destination-track').scrollBy({ left: 470, behavior: reducedMotion ? 'instant' : 'smooth' });
+  $('#cards-next').onclick = () => { completeCards(); $('#destination-track').scrollBy({ left: 470, behavior: reducedMotion ? 'instant' : 'smooth' }); };
   $('#layers-button').onclick = () => { const picker = $('.layer-picker'); picker.hidden = !picker.hidden; $('#layers-button').classList.toggle('active', !picker.hidden); $('#layers-button').setAttribute('aria-expanded', String(!picker.hidden)); };
   $('#zoom-in').onclick = () => map?.zoomIn(); $('#zoom-out').onclick = () => map?.zoomOut();
   $('#north-button').onclick = () => map?.easeTo({ bearing: 0, duration: reducedMotion ? 0 : 700 });
@@ -346,8 +354,6 @@ function overviewCamera() {
 async function initMap() {
   try {
     maplibregl = await mapEngine;
-    maplibregl.setWorkerUrl(mapWorkerUrl);
-    maplibregl.setWorkerCount(navigator.hardwareConcurrency >= 4 ? 2 : 1);
     installTileProtocol(maplibregl, { baseURL: new URL(import.meta.env.BASE_URL, location.href).href });
     const coverageReady = fetch(assetUrl('/data/tiles-detail.json'), { signal: AbortSignal.timeout(2500) }).then(r => r.ok ? r.json() : {}).then(setDetailTileCoverage).catch(() => {});
     const geographyReady = loadLandformData();
@@ -383,17 +389,18 @@ async function initMap() {
       if (currentPlace?.id !== initialPlace?.id) map.jumpTo(currentPlace ? placeCamera(currentPlace) : overviewCamera());
       if (currentPlace) $('.map-caption').innerHTML = `<span class="live-dot"></span> ${currentPlace.name} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
       applyBorders();
-      updatePlaceMarkers = addPlaceMarkers(map, places, highlights, selectPlace);
-      updatePlaceMarkers(state);
       window.__atlas = { map, state, places, selectPlace, startTour, stopTour, resetView, selectLandform, setLandformVisible, get landforms() { return landforms; } };
     });
     let enhanced = false;
+    let enhancementQueued = false;
     const enhanceMap = () => {
       if (enhanced) return;
       enhanced = true;
-      map.off('sourcedata', onImagery);
       performance.mark('atlas-imagery');
-      // Paint the satellite view first; DEM and thematic labels enhance it afterwards.
+      completeCards();
+      updatePlaceMarkers = addPlaceMarkers(map, places, highlights, selectPlace);
+      updatePlaceMarkers(state);
+      // Add terrain and labels after the complete satellite view has been presented.
       if (state.terrain) map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
       map.setLayoutProperty('hillshade', 'visibility', 'visible');
       $('#map-status').textContent = state.terrain ? '影像已就绪 · 地形细化中' : '真实影像 · 自由探索';
@@ -404,18 +411,22 @@ async function initMap() {
       }).catch(error => { console.warn('Geography layers:', error); showToast('山系与水系暂未载入，请刷新地图重试'); }).finally(() => {
         map.once('idle', () => { performance.mark('atlas-ready'); if (!errorNotice) $('#map-status').textContent = state.terrain ? '真实地形 · 自由探索' : '真实影像 · 自由探索'; });
       });
-      loadPhotography();
     };
-    const onImagery = e => { if (e.sourceId === state.layer && e.sourceDataType === 'content' && e.tile) enhanceMap(); };
-    map.on('sourcedata', onImagery);
-    map.once('load', enhanceMap);
+    const onImageryPaint = () => {
+      if (!state.mapReady || enhancementQueued || !map.isSourceLoaded(state.layer)) return;
+      enhancementQueued = true;
+      map.off('render', onImageryPaint);
+      requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(enhanceMap, 0)));
+    };
+    map.on('render', onImageryPaint);
+    map.once('load', onImageryPaint);
     map.on('move', scheduleMarkers);
     map.on('moveend', scheduleMarkers);
     map.on('resize', scheduleMarkers);
     map.on('render', scheduleMarkers);
     let errorNotice = false;
     map.on('error', e => { console.warn('Map resource:', e.error?.message || e); if (e.sourceId === 'provinces') provincesLoaded = false; if (state.mapReady && !errorNotice && /fetch|network|tile/i.test(e.error?.message || '')) { errorNotice = true; $('#map-status').textContent = '部分高清影像暂不可用 · 可返回全景'; } });
-  } catch (error) { console.error(error); $('#map-status').textContent = '浏览器暂不支持三维地图'; showToast('请使用支持 WebGL 的现代浏览器，浏览三维山河'); }
+  } catch (error) { completeCards(); console.error(error); $('#map-status').textContent = '浏览器暂不支持三维地图'; showToast('请使用支持 WebGL 的现代浏览器，浏览三维山河'); }
 }
 
 function scheduleMarkers() {
@@ -433,7 +444,8 @@ function updateMarkers() {
   $('.compass-button .icon').style.transform = `rotate(${-map.getBearing()}deg)`;
 }
 
-renderCards(); bindUI();
+renderCards(true); bindUI();
+setTimeout(completeCards, 150);
 performance.mark('atlas-shell');
 initMap();
 function loadPhotography() {

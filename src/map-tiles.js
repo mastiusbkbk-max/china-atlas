@@ -35,6 +35,7 @@ function abortError() {
 
 export function installTileProtocol(maplibregl, options = {}) {
   const fetchTile = options.fetch ?? globalThis.fetch.bind(globalThis);
+  const ImageConstructor = options.Image ?? globalThis.Image;
   const cacheStorage = options.cacheStorage === undefined ? globalThis.caches : options.cacheStorage;
   const baseURL = options.baseURL ?? globalThis.document?.baseURI ?? globalThis.location?.href ?? 'http://localhost/';
   const memoryLimit = options.maxMemoryBytes ?? 32 * 1024 * 1024;
@@ -152,8 +153,7 @@ export function installTileProtocol(maplibregl, options = {}) {
     }
   }
 
-  async function load(tile, signal) {
-    const local = localPath(tile);
+  async function load(tile, signal, local) {
     if (local) {
       try { return (await request(new URL(local, baseURL).href, signal)).data; }
       catch (error) { if (signal.aborted) throw error; }
@@ -174,12 +174,32 @@ export function installTileProtocol(maplibregl, options = {}) {
     return data;
   }
 
-  function handler(params, abortController) {
-    let tile;
-    try { tile = parseTile(params.url); }
-    catch (error) { return Promise.reject(error); }
-    const signal = abortController?.signal;
-    if (signal?.aborted) return Promise.reject(abortError());
+  function loadLocalImage(url, signal) {
+    return new Promise((resolve, reject) => {
+      const image = new ImageConstructor();
+      let finished = false;
+      const finish = error => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        signal?.removeEventListener('abort', cancel);
+        image.onload = image.onerror = null;
+        if (error) { image.src = ''; reject(error); }
+        else resolve({ data: image });
+      };
+      const cancel = () => finish(abortError());
+      const timer = setTimeout(() => finish(new Error(`Tile request timed out: ${url}`)), timeoutMs);
+      image.decoding = 'async';
+      image.fetchPriority = 'high';
+      if (new URL(url).origin !== globalThis.location?.origin) image.crossOrigin = 'anonymous';
+      image.onload = () => finish();
+      image.onerror = () => finish(new Error(`Local tile image unavailable: ${url}`));
+      signal?.addEventListener('abort', cancel, { once: true });
+      image.src = url;
+    });
+  }
+
+  function loadEncodedTile(tile, signal, local) {
     if (memory.has(tile.key)) {
       const data = memory.get(tile.key);
       memory.delete(tile.key);
@@ -190,7 +210,7 @@ export function installTileProtocol(maplibregl, options = {}) {
     if (!entry) {
       entry = { controller: new AbortController(), consumers: 0, done: false };
       inFlight.set(tile.key, entry);
-      entry.promise = load(tile, entry.controller.signal).then(data => {
+      entry.promise = load(tile, entry.controller.signal, local).then(data => {
         if (entry.controller.signal.aborted) throw abortError();
         remember(tile.key, data);
         return data;
@@ -218,6 +238,24 @@ export function installTileProtocol(maplibregl, options = {}) {
       signal?.addEventListener('abort', cancel, { once: true });
       entry.promise.then(data => finish(null, data), error => finish(error));
     });
+  }
+
+  function handler(params, abortController) {
+    let tile;
+    try { tile = parseTile(params.url); }
+    catch (error) { return Promise.reject(error); }
+    const signal = abortController?.signal;
+    if (signal?.aborted) return Promise.reject(abortError());
+    const local = localPath(tile);
+    // Stable JPEG URLs let the browser reuse its image decoding cache on reload.
+    // DEM remains encoded bytes so its elevation channels bypass color conversion.
+    if (local && tile.source !== 'terrain' && ImageConstructor) {
+      return loadLocalImage(new URL(local, baseURL).href, signal).catch(error => {
+        if (signal?.aborted) throw error;
+        return loadEncodedTile(tile, signal, null);
+      });
+    }
+    return loadEncodedTile(tile, signal, local);
   }
 
   maplibregl.addProtocol('atlas', handler);

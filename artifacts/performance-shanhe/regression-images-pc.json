@@ -1,0 +1,284 @@
+{
+  "url": "http://127.0.0.1:4209/china-atlas/",
+  "started": "2026-10-27T10:50:55.489Z",
+  "checks": [
+    {
+      "name": "DPR 1 full map and data",
+      "passed": true,
+      "destinations": 81,
+      "regions": 9,
+      "landforms": 84,
+      "terrain": {
+        "source": "terrain",
+        "exaggeration": 1.5
+      },
+      "canvas": [
+        1496,
+        900
+      ],
+      "visiblePlaces": [
+        "helanshan",
+        "victoria-harbour",
+        "jinshitan",
+        "sanya",
+        "huangguoshu",
+        "detian",
+        "siguniang",
+        "hengshan-north",
+        "taishan",
+        "great-wall",
+        "zhangjiajie"
+      ]
+    },
+    {
+      "name": "DPR 1 rendered region labels",
+      "passed": true,
+      "names": [
+        "内 蒙 古 高 原",
+        "东 北 平 原",
+        "青 藏 高 原",
+        "塔 里 木 盆 地",
+        "南 海",
+        "海 南 岛",
+        "台 湾 岛",
+        "四 川 盆 地",
+        "华 北 平 原"
+      ],
+      "count": 9
+    },
+    {
+      "name": "DPR 2 full map and data",
+      "passed": true,
+      "destinations": 81,
+      "regions": 9,
+      "landforms": 84,
+      "terrain": {
+        "source": "terrain",
+        "exaggeration": 1.5
+      },
+      "canvas": [
+        2992,
+        1800
+      ],
+      "visiblePlaces": [
+        "helanshan",
+        "victoria-harbour",
+        "jinshitan",
+        "sanya",
+        "huangguoshu",
+        "detian",
+        "siguniang",
+        "hengshan-north",
+        "taishan",
+        "great-wall",
+        "zhangjiajie"
+      ]
+    },
+    {
+      "name": "DPR 2 rendered region labels",
+      "passed": true,
+      "names": [
+        "内 蒙 古 高 原",
+        "东 北 平 原",
+        "青 藏 高 原",
+        "塔 里 木 盆 地",
+        "南 海",
+        "海 南 岛",
+        "台 湾 岛",
+        "四 川 盆 地",
+        "华 北 平 原"
+      ],
+      "count": 9
+    },
+    {
+      "name": "Original JPEG bytes and full RGBA pixels identical across bitmap/image decoders",
+      "passed": true,
+      "samples": 6
+    },
+    {
+      "name": "All 81 cards and final card content render after horizontal scrolling",
+      "passed": true,
+      "lastId": "maijishan",
+      "lastText": "麦积山石窟",
+      "image": [
+        480,
+        288
+      ],
+      "scroll": [
+        21629,
+        23037,
+        1408
+      ],
+      "contentVisibility": "auto"
+    },
+    {
+      "name": "Keyboard Tab reaches and reveals the final offscreen card",
+      "passed": true,
+      "active": "maijishan",
+      "last": "maijishan",
+      "rect": [
+        1182.5,
+        1452.09375
+      ],
+      "track": [
+        44,
+        1452
+      ]
+    },
+    {
+      "name": "Actual native label click and event arbitration",
+      "passed": true,
+      "selected": "helanshan",
+      "landform": null
+    },
+    {
+      "name": "PC rich reading and photo metadata",
+      "passed": true,
+      "chapters": 2,
+      "photoButtons": 2
+    },
+    {
+      "name": "Full photo dialog",
+      "passed": true,
+      "title": "贺兰山岩画 / 山河影像",
+      "count": "01 / 02"
+    },
+    {
+      "name": "Reset clears selection",
+      "passed": true
+    },
+    {
+      "name": "Nature classification",
+      "passed": true,
+      "filter": [
+        "all",
+        [
+          "!=",
+          [
+            "get",
+            "id"
+          ],
+          ""
+        ],
+        [
+          "==",
+          [
+            "get",
+            "category"
+          ],
+          "nature"
+        ]
+      ]
+    },
+    {
+      "name": "Cross-category search restores all places",
+      "passed": true
+    },
+    {
+      "name": "River visibility toggle",
+      "passed": true
+    },
+    {
+      "name": "Landform selector replaces place selection",
+      "passed": true,
+      "selected": "himalaya"
+    },
+    {
+      "name": "Direct place link",
+      "passed": true,
+      "hash": "#everest"
+    },
+    {
+      "name": "Selection before native layers install",
+      "passed": true,
+      "early": {
+        "beforeNative": true
+      },
+      "selected": "guilin"
+    }
+  ],
+  "runtimeErrors": [],
+  "screenshotLimitation": "Headless Chromium GPU Page.captureScreenshot stalled at DPR2; DPR2 canvas and functional assertions were checked separately. Screenshots use DPR1.",
+  "pixelDecoding": [
+    {
+      "path": "satellite/3/6/3.jpg",
+      "dimensions": [
+        256,
+        256
+      ],
+      "channels": 262144,
+      "differingChannels": 0,
+      "maxDifference": 0,
+      "encodedSha256": "130d7280c34bca86d023433bc8e482117826ac8adf57af8b3341e7c40b57463e",
+      "decodedSha256": "65d150ec9c5bc6acda14116e5d3eb81d63dcf2108e546546cd7ac863edcf6460",
+      "referenceSha256": "130d7280c34bca86d023433bc8e482117826ac8adf57af8b3341e7c40b57463e"
+    },
+    {
+      "path": "satellite/4/12/6.jpg",
+      "dimensions": [
+        256,
+        256
+      ],
+      "channels": 262144,
+      "differingChannels": 0,
+      "maxDifference": 0,
+      "encodedSha256": "bc602a658760a717a56bac201ad8a47a11a0c0fbc25766e989fb1b0a2b8d7217",
+      "decodedSha256": "38334b4b1980e9b42895fbd233301cef0f936de7b382f7275a73fa4fce04c97f",
+      "referenceSha256": "bc602a658760a717a56bac201ad8a47a11a0c0fbc25766e989fb1b0a2b8d7217"
+    },
+    {
+      "path": "satellite/5/25/12.jpg",
+      "dimensions": [
+        256,
+        256
+      ],
+      "channels": 262144,
+      "differingChannels": 0,
+      "maxDifference": 0,
+      "encodedSha256": "b325556cdb9036f8b8d83e7794516bd52de93955898b7fe369114d2a7484af6d",
+      "decodedSha256": "11e256e6bf897da20840eb300e69a7cd4e4b7c257cb13f451b0ab528e3336c55",
+      "referenceSha256": "b325556cdb9036f8b8d83e7794516bd52de93955898b7fe369114d2a7484af6d"
+    },
+    {
+      "path": "satellite/9/422/212.jpg",
+      "dimensions": [
+        256,
+        256
+      ],
+      "channels": 262144,
+      "differingChannels": 0,
+      "maxDifference": 0,
+      "encodedSha256": "475f00498f2c68b2474a5148d3574e51ea376bece47bb71bc315230462581fa0",
+      "decodedSha256": "34f318bb1e0f197b9a6cad1d10b3afc1d16bd02b37793b8aa1c2560cf5cfb27f",
+      "referenceSha256": "475f00498f2c68b2474a5148d3574e51ea376bece47bb71bc315230462581fa0"
+    },
+    {
+      "path": "relief/0/0/0.jpg",
+      "dimensions": [
+        256,
+        256
+      ],
+      "channels": 262144,
+      "differingChannels": 0,
+      "maxDifference": 0,
+      "encodedSha256": "ff9702d84e9c7b5716fd03e32e94994fbb17896a1cb924c37e07fc7dff3e2592",
+      "decodedSha256": "08ca193420e3bcfd321e9a6e93e47cfe9a8d700edc7062c0f4f9d6ff86dcd544",
+      "referenceSha256": "ff9702d84e9c7b5716fd03e32e94994fbb17896a1cb924c37e07fc7dff3e2592"
+    },
+    {
+      "path": "relief/4/12/6.jpg",
+      "dimensions": [
+        256,
+        256
+      ],
+      "channels": 262144,
+      "differingChannels": 0,
+      "maxDifference": 0,
+      "encodedSha256": "e2f571c7abd55273cce42a1de5952a9754c2d46edaa33104f3a6ff97b6887730",
+      "decodedSha256": "5efcf45d44b7b89f72eb0281e92c9a606ab48e1312372a30842ce8385e59af37",
+      "referenceSha256": "e2f571c7abd55273cce42a1de5952a9754c2d46edaa33104f3a6ff97b6887730"
+    }
+  ],
+  "completed": true,
+  "finished": "2026-10-27T10:51:08.919Z"
+}

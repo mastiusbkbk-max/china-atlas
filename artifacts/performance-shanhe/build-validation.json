@@ -1,0 +1,28 @@
+{
+  "build": "dist-cards",
+  "sourceBase": "1bd543d",
+  "files": 6991,
+  "bytes": 270484287,
+  "tests": {
+    "passed": 46,
+    "failed": 0
+  },
+  "pcRegression": {
+    "passed": 19,
+    "runtimeExceptions": 0
+  },
+  "unchangedAssets": {
+    "files": 6983,
+    "bytes": 268542932,
+    "verification": "SHA256 matches dist-previous for every file under data/fonts/images/tiles"
+  },
+  "entry": {
+    "file": "assets/index-DduTPhcP.js",
+    "sha256": "54dd02e7fa4a1eb7492d6082c102b334fa55902da6e65327e3d900d7ad800988"
+  },
+  "css": {
+    "file": "assets/index-B054giJW.css",
+    "sha256": "0c812f414aacced2dc634ab6d8459d064d7c8236151b787de7162ea900d89617"
+  },
+  "main": "assets/main-Lkl8ps7G.js"
+}

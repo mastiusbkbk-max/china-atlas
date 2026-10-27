@@ -6,4 +6,14 @@ promo/
 
 # Local baseline build and shared dependency link
 dist-baseline/
+dist-previous/
+dist-boot/
+dist-candidate/
+dist-parallel/
+dist-preload/
+dist-redraw/
+dist-final/
+dist-static/
+dist-images/
+dist-cards/
 node_modules

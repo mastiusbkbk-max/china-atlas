@@ -1,5 +1,20 @@
 # 山河志 PC 性能测量
 
+## 本轮最终对照（2026-10-27）
+
+当前结论以 `interleaved-cards-ten-verified.json` 及同名 summary 为准：原版、上次发布版、最终 cards 构建同场交错，每个版本每种 DPR/缓存状态 10 个样本，共 120 个导航与 60 次真实点击。偶数样本中位数取中间两值平均，p90 使用 nearest-rank；保留所有慢值和工具异常。独立冻结的 driver/probe 随 JSON 保存。
+
+```sh
+node artifacts/performance-shanhe/serve-variants.mjs 4201=dist-baseline 4202=dist-previous 4210=dist-cards
+PERF_VARIANTS=original,published,cards PERF_REPEATS=10 PERF_INTERACTIONS=1 PERF_LABEL=interleaved-cards-ten-verified node artifacts/performance-shanhe/interleaved.mjs
+```
+
+先构建并冻结对应源码版本，避免构建、截图或其他 GPU 测试与计时同时进行。Chromium 路径可通过 `PERF_BROWSER_BIN` 指定。循环服务与正式 GitHub Pages 缓存/网络不同，不能将本地时延当成公网保证。
+
+本轮最终结果不等于全目标达成：首图相对上次发布快 25.2%–47.7%，相对原版快 16.8%–19.0%；DPR2 缓存真刷新中位 83.8 ms，仍超过 80 ms。所有高清资源保留，细节与失败实验见主目录 PERFORMANCE.md。
+
+以下为较早测量方式及历史边界。
+
 基线为原公开中国版 `d6412a3`，保留 81 个地点、山系/水系、真实三维地形、原摄影和既有稀疏缓存。这里只添加独立测量代码，不进入生产 JavaScript。
 
 ## 本机协议

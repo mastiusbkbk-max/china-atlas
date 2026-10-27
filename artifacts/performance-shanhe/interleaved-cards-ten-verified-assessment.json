@@ -1,0 +1,369 @@
+{
+  "completed": true,
+  "samples": 120,
+  "warmups": 6,
+  "clicks": 60,
+  "summary": [
+    {
+      "variant": "original",
+      "dpr": 1,
+      "cache": "cold",
+      "samples": 10,
+      "medianMapMs": 100.69999998807907,
+      "p90MapMs": 124.69999992847443,
+      "minMapMs": 94.89999997615814,
+      "maxMapMs": 128.60000002384186,
+      "medianFullMs": 310.10000002384186,
+      "p90FullMs": 357.5,
+      "minFullMs": 286.7000000476837,
+      "maxFullMs": 369.5
+    },
+    {
+      "variant": "original",
+      "dpr": 1,
+      "cache": "warm-reload",
+      "samples": 10,
+      "medianMapMs": 92.55000001192093,
+      "p90MapMs": 97.19999992847443,
+      "minMapMs": 82.19999992847443,
+      "maxMapMs": 101.79999995231628,
+      "medianFullMs": 274.69999998807907,
+      "p90FullMs": 304.39999997615814,
+      "minFullMs": 267.10000002384186,
+      "maxFullMs": 305.6999999284744
+    },
+    {
+      "variant": "original",
+      "dpr": 2,
+      "cache": "cold",
+      "samples": 10,
+      "medianMapMs": 108.10000002384186,
+      "p90MapMs": 118,
+      "minMapMs": 101.5,
+      "maxMapMs": 124.39999997615814,
+      "medianFullMs": 317.60000002384186,
+      "p90FullMs": 330.8000000715256,
+      "minFullMs": 297.10000002384186,
+      "maxFullMs": 369.2999999523163
+    },
+    {
+      "variant": "original",
+      "dpr": 2,
+      "cache": "warm-reload",
+      "samples": 10,
+      "medianMapMs": 102.80000001192093,
+      "p90MapMs": 108.09999990463257,
+      "minMapMs": 93.20000004768372,
+      "maxMapMs": 119.60000002384186,
+      "medianFullMs": 300.9000000357628,
+      "p90FullMs": 316.5,
+      "minFullMs": 277.1999999284744,
+      "maxFullMs": 321
+    },
+    {
+      "variant": "published",
+      "dpr": 1,
+      "cache": "cold",
+      "samples": 10,
+      "medianMapMs": 126.80000001192093,
+      "p90MapMs": 167.70000004768372,
+      "minMapMs": 104.29999995231628,
+      "maxMapMs": 168.5,
+      "medianFullMs": 303.19999998807907,
+      "p90FullMs": 330.7000000476837,
+      "minFullMs": 280.2999999523163,
+      "maxFullMs": 342.89999997615814
+    },
+    {
+      "variant": "published",
+      "dpr": 1,
+      "cache": "warm-reload",
+      "samples": 10,
+      "medianMapMs": 102.45000004768372,
+      "p90MapMs": 104.90000009536743,
+      "minMapMs": 95.30000007152557,
+      "maxMapMs": 119.10000002384186,
+      "medianFullMs": 278.30000001192093,
+      "p90FullMs": 297,
+      "minFullMs": 263.60000002384186,
+      "maxFullMs": 303.6999999284744
+    },
+    {
+      "variant": "published",
+      "dpr": 2,
+      "cache": "cold",
+      "samples": 10,
+      "medianMapMs": 167.5,
+      "p90MapMs": 189.39999997615814,
+      "minMapMs": 116.10000002384186,
+      "maxMapMs": 197.60000002384186,
+      "medianFullMs": 334.4500000476837,
+      "p90FullMs": 364.7999999523163,
+      "minFullMs": 304.6999999284744,
+      "maxFullMs": 416.60000002384186
+    },
+    {
+      "variant": "published",
+      "dpr": 2,
+      "cache": "warm-reload",
+      "samples": 10,
+      "medianMapMs": 116.69999998807907,
+      "p90MapMs": 166.60000002384186,
+      "minMapMs": 106,
+      "maxMapMs": 175.79999995231628,
+      "medianFullMs": 298.2999999523163,
+      "p90FullMs": 307.10000002384186,
+      "minFullMs": 278.39999997615814,
+      "maxFullMs": 383.6999999284744
+    },
+    {
+      "variant": "cards",
+      "dpr": 1,
+      "cache": "cold",
+      "samples": 10,
+      "medianMapMs": 83.75,
+      "p90MapMs": 90,
+      "minMapMs": 81.5,
+      "maxMapMs": 96.20000004768372,
+      "medianFullMs": 280.24999994039536,
+      "p90FullMs": 290.2000000476837,
+      "minFullMs": 263.2000000476837,
+      "maxFullMs": 295.7000000476837
+    },
+    {
+      "variant": "cards",
+      "dpr": 1,
+      "cache": "warm-reload",
+      "samples": 10,
+      "medianMapMs": 76.60000002384186,
+      "p90MapMs": 80.20000004768372,
+      "minMapMs": 71.89999997615814,
+      "maxMapMs": 82.09999990463257,
+      "medianFullMs": 254.94999992847443,
+      "p90FullMs": 260.6999999284744,
+      "minFullMs": 249.30000007152557,
+      "maxFullMs": 268.90000009536743
+    },
+    {
+      "variant": "cards",
+      "dpr": 2,
+      "cache": "cold",
+      "samples": 10,
+      "medianMapMs": 87.55000001192093,
+      "p90MapMs": 94.80000007152557,
+      "minMapMs": 77.19999992847443,
+      "maxMapMs": 105.80000007152557,
+      "medianFullMs": 303.30000001192093,
+      "p90FullMs": 332.10000002384186,
+      "minFullMs": 271.2999999523163,
+      "maxFullMs": 333.39999997615814
+    },
+    {
+      "variant": "cards",
+      "dpr": 2,
+      "cache": "warm-reload",
+      "samples": 10,
+      "medianMapMs": 83.80000001192093,
+      "p90MapMs": 85.89999997615814,
+      "minMapMs": 79.29999995231628,
+      "maxMapMs": 86.5,
+      "medianFullMs": 272.19999998807907,
+      "p90FullMs": 283.60000002384186,
+      "minFullMs": 258.1999999284744,
+      "maxFullMs": 291.5
+    }
+  ],
+  "deltas": [
+    {
+      "dpr": 1,
+      "cache": "cold",
+      "mapTimeReductionVsOriginalPct": 16.832174766718587,
+      "mapTimeReductionVsPublishedPct": 33.95110410715587,
+      "fullTimeReductionVsOriginalPct": 9.62592714645324,
+      "fullTimeReductionVsPublishedPct": 7.56926122974474
+    },
+    {
+      "dpr": 1,
+      "cache": "warm-reload",
+      "mapTimeReductionVsOriginalPct": 17.23392759159873,
+      "mapTimeReductionVsPublishedPct": 25.23182041172317,
+      "fullTimeReductionVsOriginalPct": 7.189661470863385,
+      "fullTimeReductionVsPublishedPct": 8.39022640404108
+    },
+    {
+      "dpr": 2,
+      "cache": "cold",
+      "mapTimeReductionVsOriginalPct": 19.010175770017156,
+      "mapTimeReductionVsPublishedPct": 47.73134327646512,
+      "fullTimeReductionVsOriginalPct": 4.502518895103103,
+      "fullTimeReductionVsPublishedPct": 9.31379878347186
+    },
+    {
+      "dpr": 2,
+      "cache": "warm-reload",
+      "mapTimeReductionVsOriginalPct": 18.48249027023027,
+      "mapTimeReductionVsPublishedPct": 28.191945140975903,
+      "fullTimeReductionVsOriginalPct": 9.538052523852658,
+      "fullTimeReductionVsPublishedPct": 8.749580948176106
+    }
+  ],
+  "clickStats": [
+    {
+      "dpr": 1,
+      "samples": 10,
+      "medianMs": 16.25,
+      "p90Ms": 19.899999976158142,
+      "minMs": 11.600000023841858,
+      "maxMs": 20
+    },
+    {
+      "dpr": 2,
+      "samples": 10,
+      "medianMs": 17.30000001192093,
+      "p90Ms": 21,
+      "minMs": 12.200000047683716,
+      "maxMs": 21.699999928474426
+    }
+  ],
+  "frames": [
+    {
+      "dpr": 1,
+      "scene": "ordinary overview, simultaneous rotation and zoom",
+      "frames": 254,
+      "fps": 126.24750499001996,
+      "medianMs": 8.200000047683716,
+      "p95Ms": 9.100000023841858,
+      "maxMs": 11.399999976158142
+    },
+    {
+      "dpr": 2,
+      "scene": "ordinary overview, simultaneous rotation and zoom",
+      "frames": 249,
+      "fps": 124.22360248595558,
+      "medianMs": 8.200000047683716,
+      "p95Ms": 9.5,
+      "maxMs": 11.600000023841858
+    }
+  ],
+  "warmTarget": [
+    {
+      "dpr": 1,
+      "medianMs": 76.60000002384186,
+      "p90Ms": 80.20000004768372,
+      "maxMs": 82.09999990463257,
+      "meeting80ms": 8,
+      "samples": 10
+    },
+    {
+      "dpr": 2,
+      "medianMs": 83.80000001192093,
+      "p90Ms": 85.89999997615814,
+      "maxMs": 86.5,
+      "meeting80ms": 2,
+      "samples": 10
+    }
+  ],
+  "quality": {
+    "all81Cards": true,
+    "all9RegionsRendered": true,
+    "all84Landforms": true,
+    "all27SatelliteTextures": true,
+    "allNativeDpr": true,
+    "allPointerDragsAccepted": true
+  },
+  "runtimeExceptions": [],
+  "instrumentationExceptions": [
+    {
+      "error": "Invalid InterceptionId.",
+      "url": "http://127.0.0.1:4210/china-atlas/images/details/everest.jpg"
+    }
+  ],
+  "targets": {
+    "coldMap640ms": {
+      "measuredSamplesPass": true,
+      "scope": "Local overview only"
+    },
+    "warmMap80ms": {
+      "allSamplesPass": false,
+      "byDpr": [
+        {
+          "dpr": 1,
+          "medianMs": 76.60000002384186,
+          "p90Ms": 80.20000004768372,
+          "maxMs": 82.09999990463257,
+          "meeting80ms": 8,
+          "samples": 10
+        },
+        {
+          "dpr": 2,
+          "medianMs": 83.80000001192093,
+          "p90Ms": 85.89999997615814,
+          "maxMs": 86.5,
+          "meeting80ms": 2,
+          "samples": 10
+        }
+      ]
+    },
+    "click40ms": {
+      "allFinalSamplesPass": true
+    },
+    "firstRealScene640ms": {
+      "verified": false
+    },
+    "viewHdDetail800ms": {
+      "overviewFullReadyAllSamplesPass": true,
+      "selectedPlaceDetailVerified": false
+    },
+    "ordinary100fps": {
+      "renderCallbackSamplesPass": true,
+      "physicalDisplayVerified": false
+    },
+    "complex75fps": {
+      "verified": false
+    }
+  },
+  "hardware": [
+    "Apple M5",
+    "17179869184",
+    "10"
+  ],
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "HeadlessChrome/145.0.7632.6",
+    "revision": "@47e20adcc15fc15f01825aa17e570c8f5492ac0f",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+    "jsVersion": "14.5.201.2"
+  },
+  "conditions": {
+    "width": 1496,
+    "height": 900,
+    "dprs": [
+      1,
+      2
+    ],
+    "repeats": 10,
+    "ordering": "Each trial alternates variant order; every cold navigation is followed immediately by a genuine warm reload.",
+    "network": "Same loopback static handler; no throttling; all non-local browser requests blocked.",
+    "cache": "Separate ports isolate each origin storage. Cold clears all HTTP cache and that origin storage; warm is Page.reload. GPU, shader and OS caches are shared, not cleared.",
+    "paint": "Actual satellite texture drawn, source loaded and input enabled, followed by two rAF callbacks; actual drag performed after complete-terrain timing.",
+    "interactions": true,
+    "targets": {
+      "mapMs": 640,
+      "warmMs": 80,
+      "clickMs": 40,
+      "firstRealSceneMs": 640,
+      "detailMs": 800,
+      "ordinaryFps": 100,
+      "complexFps": 75
+    },
+    "statistics": "Median averages both middle values for even sample counts; p90 is nearest-rank ceil(0.9*n). No measured samples are discarded."
+  },
+  "staticHelperCopy": {
+    "source": "/Users/haozhiheng/Documents/Playground/china-atlas/scripts/static-delivery.mjs",
+    "copy": "artifacts/performance-shanhe/static-delivery.mjs",
+    "bytes": 9587,
+    "sourceSha256": "38f2c22933739e0418b85c12b1b9c682d8090227ac7346ff8143a0852f8c46b0",
+    "copySha256": "38f2c22933739e0418b85c12b1b9c682d8090227ac7346ff8143a0852f8c46b0",
+    "byteIdentical": true
+  }
+}

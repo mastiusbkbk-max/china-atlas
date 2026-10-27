@@ -1,0 +1,135 @@
+{
+  "url": "http://127.0.0.1:4203/china-atlas/",
+  "started": "2026-10-27T10:30:38.896Z",
+  "checks": [
+    {
+      "name": "DPR 1 full map and data",
+      "passed": true,
+      "destinations": 81,
+      "regions": 9,
+      "landforms": 84,
+      "terrain": {
+        "source": "terrain",
+        "exaggeration": 1.5
+      },
+      "canvas": [
+        1496,
+        900
+      ],
+      "visiblePlaces": [
+        "helanshan",
+        "victoria-harbour",
+        "jinshitan",
+        "huangguoshu",
+        "detian",
+        "siguniang",
+        "hengshan-north",
+        "taishan",
+        "great-wall",
+        "zhangjiajie"
+      ]
+    },
+    {
+      "name": "DPR 2 full map and data",
+      "passed": true,
+      "destinations": 81,
+      "regions": 9,
+      "landforms": 84,
+      "terrain": {
+        "source": "terrain",
+        "exaggeration": 1.5
+      },
+      "canvas": [
+        2992,
+        1800
+      ],
+      "visiblePlaces": [
+        "helanshan",
+        "victoria-harbour",
+        "jinshitan",
+        "huangguoshu",
+        "detian",
+        "siguniang",
+        "hengshan-north",
+        "taishan",
+        "great-wall",
+        "zhangjiajie"
+      ]
+    },
+    {
+      "name": "Actual native label click and event arbitration",
+      "passed": true,
+      "selected": "helanshan",
+      "landform": null
+    },
+    {
+      "name": "PC rich reading and photo metadata",
+      "passed": true,
+      "chapters": 2,
+      "photoButtons": 2
+    },
+    {
+      "name": "Full photo dialog",
+      "passed": true,
+      "title": "贺兰山岩画 / 山河影像",
+      "count": "01 / 02"
+    },
+    {
+      "name": "Reset clears selection",
+      "passed": true
+    },
+    {
+      "name": "Nature classification",
+      "passed": true,
+      "filter": [
+        "all",
+        [
+          "!=",
+          [
+            "get",
+            "id"
+          ],
+          ""
+        ],
+        [
+          "==",
+          [
+            "get",
+            "category"
+          ],
+          "nature"
+        ]
+      ]
+    },
+    {
+      "name": "Cross-category search restores all places",
+      "passed": true
+    },
+    {
+      "name": "River visibility toggle",
+      "passed": true
+    },
+    {
+      "name": "Landform selector replaces place selection",
+      "passed": true,
+      "selected": "himalaya"
+    },
+    {
+      "name": "Direct place link",
+      "passed": true,
+      "hash": "#everest"
+    },
+    {
+      "name": "Selection before native layers install",
+      "passed": true,
+      "early": {
+        "beforeNative": true
+      },
+      "selected": "guilin"
+    }
+  ],
+  "runtimeErrors": [],
+  "screenshotLimitation": "Headless Chromium GPU Page.captureScreenshot stalled at DPR2; DPR2 canvas and functional assertions were checked separately. Screenshots use DPR1.",
+  "completed": true,
+  "finished": "2026-10-27T10:30:53.561Z"
+}

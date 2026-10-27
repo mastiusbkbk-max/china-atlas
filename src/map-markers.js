@@ -43,8 +43,8 @@ export function addPlaceMarkers(map, places, highlights, onSelect) {
   });
   const labels = [ ['青 藏 高 原', 87, 33], ['塔 里 木 盆 地', 82.5, 39], ['内 蒙 古 高 原', 111, 44], ['东 北 平 原', 126, 47], ['华 北 平 原', 116, 36], ['四 川 盆 地', 105.2, 30.8], ['南 海', 118.5, 18], ['台 湾 岛', 121, 23.7], ['海 南 岛', 109.5, 19.2] ];
   map.addSource('geography-names', { type: 'geojson', data: { type: 'FeatureCollection', features: labels.map(([name, x, y], i) => point(String(i), name, [x, y])) } });
-  map.addLayer({ id: 'geography-names', type: 'symbol', source: 'geography-names', minzoom: 3.3, maxzoom: 8.5,
-    layout: { 'text-field': ['get', 'name'], 'text-font': font, 'text-size': 12, 'text-padding': 20 },
+  map.addLayer({ id: 'geography-names', type: 'symbol', source: 'geography-names',
+    layout: { 'text-field': ['get', 'name'], 'text-font': font, 'text-size': 12, 'text-padding': 20, 'text-allow-overlap': true, 'text-ignore-placement': true },
     paint: { 'text-color': '#b4c3ae', 'text-opacity': .5, 'text-halo-color': '#10262b', 'text-halo-width': 1 }
   });
   let previous;
