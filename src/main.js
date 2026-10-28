@@ -16,6 +16,7 @@ const state = { category: 'all', selected: null, landform: null, terrain: true, 
 const catalog = { theme: 'all', province: 'all', query: '' };
 let tourTimer;
 let map;
+let cameraSequence = 0;
 let landforms;
 let updatePlaceMarkers;
 let markerFrame;
@@ -139,7 +140,7 @@ function renderPlace(p, preserveReading = false) {
   $('.reading-toggle').onclick = () => setReadingExpanded(!panel.classList.contains('reading-expanded'));
   if (panel.classList.contains('reading-expanded')) setReadingExpanded(true);
   panel.querySelectorAll('[data-photo]').forEach(b => b.onclick = () => openPhoto(p, Number(b.dataset.photo)));
-  $('.place-scroll').scrollTop = scrollTop;
+  if (preserveReading && scrollTop) $('.place-scroll').scrollTop = scrollTop;
 }
 
 function selectPlace(id, fromTour = false) {
@@ -153,7 +154,11 @@ function selectPlace(id, fromTour = false) {
   renderPlace(p);
   updateCardSelection();
   updatePlaceMarkers?.(state);
-  if (map && state.mapReady) map.flyTo({ center: p.coordinate, zoom: p.zoom, pitch: state.terrain ? p.pitch : 0, bearing: -18, padding: mapPadding(), duration: reducedMotion ? 0 : 2600, essential: true });
+  const sequence = ++cameraSequence;
+  if (map && state.mapReady) requestAnimationFrame(() => setTimeout(() => {
+    if (sequence !== cameraSequence || state.selected !== p.id) return;
+    map.flyTo({ center: p.coordinate, zoom: p.zoom, pitch: state.terrain ? p.pitch : 0, bearing: -18, padding: mapPadding(), duration: reducedMotion ? 0 : 2600, essential: true });
+  }, 0));
   $('.map-caption').innerHTML = `<span class="live-dot"></span> ${p.name} <span class="caption-divider">/</span><span id="map-mode">${state.terrain ? '三维地形已开启' : '平面地图'}</span>`;
   history.replaceState(null, '', `#${p.id}`);
 }
@@ -373,8 +378,8 @@ async function initMap() {
       provinces: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } }
     }, layers: [
       { id: 'background', type: 'background', paint: { 'background-color': '#13272e' } },
-      { id: 'satellite', type: 'raster', source: 'satellite', paint: { 'raster-saturation': -.25, 'raster-contrast': .12, 'raster-brightness-max': .84, 'raster-fade-duration': 400 } },
-      { id: 'relief', type: 'raster', source: 'relief', layout: { visibility: 'none' }, paint: { 'raster-saturation': -.32, 'raster-brightness-max': .75 } },
+      { id: 'satellite', type: 'raster', source: 'satellite', paint: { 'raster-saturation': -.25, 'raster-contrast': .12, 'raster-brightness-max': .84, 'raster-fade-duration': 0 } },
+      { id: 'relief', type: 'raster', source: 'relief', layout: { visibility: 'none' }, paint: { 'raster-saturation': -.32, 'raster-brightness-max': .75, 'raster-fade-duration': 0 } },
       { id: 'hillshade', type: 'hillshade', source: 'hillshade-terrain', layout: { visibility: 'none' }, paint: { 'hillshade-exaggeration': .24, 'hillshade-shadow-color': '#10252e', 'hillshade-highlight-color': '#d6debb', 'hillshade-illumination-direction': 315 } },
       { id: 'country-glow', type: 'line', source: 'outline', maxzoom: 10, paint: { 'line-color': '#e0d6ab', 'line-width': 5, 'line-opacity': .10, 'line-blur': 5 } },
       { id: 'country-outline', type: 'line', source: 'outline', maxzoom: 10, paint: { 'line-color': '#e1d5b3', 'line-width': 1, 'line-opacity': ['interpolate', ['linear'], ['zoom'], 5, .62, 9, .2, 10, 0] } },
@@ -393,33 +398,43 @@ async function initMap() {
     });
     let enhanced = false;
     let enhancementQueued = false;
+    const texturedSources = new Set();
     const enhanceMap = () => {
       if (enhanced) return;
       enhanced = true;
       performance.mark('atlas-imagery');
+      window.dispatchEvent(new Event('atlas:first-map'));
       completeCards();
       updatePlaceMarkers = addPlaceMarkers(map, places, highlights, selectPlace);
       updatePlaceMarkers(state);
-      // Add terrain and labels after the complete satellite view has been presented.
+      // Begin detail work after the first raster texture has been presented.
       if (state.terrain) map.setTerrain({ source: 'terrain', exaggeration: 1.5 });
       map.setLayoutProperty('hillshade', 'visibility', 'visible');
-      $('#map-status').textContent = state.terrain ? '影像已就绪 · 地形细化中' : '真实影像 · 自由探索';
+      if (!errorNotice) $('#map-status').textContent = state.terrain ? '影像已呈现 · 地形细化中' : '真实影像 · 自由探索';
       addLandforms(map, selectLandform, geographyReady).then(controller => {
         landforms = controller;
         $('#landform-select').innerHTML += ['mountain', 'river'].map(kind => `<optgroup label="${kind === 'mountain' ? '主要山脉' : '主要河流'}">${landforms.features.filter(f => f.properties.kind === kind).map(f => `<option value="${f.properties.id}">${safeText(f.properties.name)}</option>`).join('')}</optgroup>`).join('');
         setLandformVisible('mountain', state.mountains); setLandformVisible('river', state.rivers);
       }).catch(error => { console.warn('Geography layers:', error); showToast('山系与水系暂未载入，请刷新地图重试'); }).finally(() => {
-        map.once('idle', () => { performance.mark('atlas-ready'); if (!errorNotice) $('#map-status').textContent = state.terrain ? '真实地形 · 自由探索' : '真实影像 · 自由探索'; });
+        map.once('idle', () => {
+          map.setPaintProperty('satellite', 'raster-fade-duration', 400);
+          map.setPaintProperty('relief', 'raster-fade-duration', 300);
+          map.once('idle', () => { performance.mark('atlas-ready'); window.dispatchEvent(new Event('atlas:ready')); if (!errorNotice) $('#map-status').textContent = state.terrain ? '真实地形 · 自由探索' : '真实影像 · 自由探索'; });
+        });
       });
     };
+    const onImageryTile = event => {
+      if ((event.sourceId === 'satellite' || event.sourceId === 'relief') && event.tile?.state === 'loaded' && event.tile.texture) texturedSources.add(event.sourceId);
+    };
     const onImageryPaint = () => {
-      if (!state.mapReady || enhancementQueued || !map.isSourceLoaded(state.layer)) return;
+      if (!state.mapReady || enhancementQueued || !texturedSources.has(state.layer)) return;
       enhancementQueued = true;
+      map.off('sourcedata', onImageryTile);
       map.off('render', onImageryPaint);
       requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(enhanceMap, 0)));
     };
+    map.on('sourcedata', onImageryTile);
     map.on('render', onImageryPaint);
-    map.once('load', onImageryPaint);
     map.on('move', scheduleMarkers);
     map.on('moveend', scheduleMarkers);
     map.on('resize', scheduleMarkers);

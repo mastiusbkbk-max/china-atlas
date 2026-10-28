@@ -16,4 +16,5 @@ dist-final/
 dist-static/
 dist-images/
 dist-cards/
+dist-public-preview/
 node_modules
